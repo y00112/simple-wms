@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liyuan.wms.wms.mapper.WmsReceiptOrderDetailMapper">
+    
+    <resultMap type="WmsReceiptOrderDetail" id="WmsReceiptOrderDetailResult">
+        <result property="id"    column="id"    />
+        <result property="receiptOrderId"    column="receipt_order_id"    />
+        <result property="itemId"    column="item_id"    />
+        <result property="inQuantity"    column="in_quantity"    />
+        <result property="rackId"    column="rack_id"    />
+        <result property="money"    column="money"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="warehouseId"    column="warehouse_id"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="receiptOrderStatus"    column="receipt_order_status"    />
+    </resultMap>
+
+    <sql id="selectWmsReceiptOrderDetailVo">
+        select id, receipt_order_id, item_id, in_quantity, rack_id, money, del_flag, remark, create_by, create_time, update_by, update_time, warehouse_id, area_id, receipt_order_status from wms_receipt_order_detail
+    </sql>
+
+    <select id="selectWmsReceiptOrderDetailList" parameterType="WmsReceiptOrderDetail" resultMap="WmsReceiptOrderDetailResult">
+        <include refid="selectWmsReceiptOrderDetailVo"/>
+        <where>  
+            <if test="receiptOrderId != null "> and receipt_order_id = #{receiptOrderId}</if>
+            <if test="itemId != null "> and item_id = #{itemId}</if>
+            <if test="inQuantity != null "> and in_quantity = #{inQuantity}</if>
+            <if test="rackId != null "> and rack_id = #{rackId}</if>
+            <if test="money != null "> and money = #{money}</if>
+            <if test="warehouseId != null "> and warehouse_id = #{warehouseId}</if>
+            <if test="areaId != null "> and area_id = #{areaId}</if>
+            <if test="receiptOrderStatus != null "> and receipt_order_status = #{receiptOrderStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsReceiptOrderDetailById" parameterType="Long" resultMap="WmsReceiptOrderDetailResult">
+        <include refid="selectWmsReceiptOrderDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWmsReceiptOrderDetail" parameterType="WmsReceiptOrderDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_receipt_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="receiptOrderId != null">receipt_order_id,</if>
+            <if test="itemId != null">item_id,</if>
+            <if test="inQuantity != null">in_quantity,</if>
+            <if test="rackId != null">rack_id,</if>
+            <if test="money != null">money,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="warehouseId != null">warehouse_id,</if>
+            <if test="areaId != null">area_id,</if>
+            <if test="receiptOrderStatus != null">receipt_order_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="receiptOrderId != null">#{receiptOrderId},</if>
+            <if test="itemId != null">#{itemId},</if>
+            <if test="inQuantity != null">#{inQuantity},</if>
+            <if test="rackId != null">#{rackId},</if>
+            <if test="money != null">#{money},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="warehouseId != null">#{warehouseId},</if>
+            <if test="areaId != null">#{areaId},</if>
+            <if test="receiptOrderStatus != null">#{receiptOrderStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsReceiptOrderDetail" parameterType="WmsReceiptOrderDetail">
+        update wms_receipt_order_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="receiptOrderId != null">receipt_order_id = #{receiptOrderId},</if>
+            <if test="itemId != null">item_id = #{itemId},</if>
+            <if test="inQuantity != null">in_quantity = #{inQuantity},</if>
+            <if test="rackId != null">rack_id = #{rackId},</if>
+            <if test="money != null">money = #{money},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="warehouseId != null">warehouse_id = #{warehouseId},</if>
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="receiptOrderStatus != null">receipt_order_status = #{receiptOrderStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWmsReceiptOrderDetailById" parameterType="Long">
+        delete from wms_receipt_order_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsReceiptOrderDetailByIds" parameterType="String">
+        delete from wms_receipt_order_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

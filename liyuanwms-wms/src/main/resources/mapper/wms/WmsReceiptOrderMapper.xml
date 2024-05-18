@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liyuan.wms.wms.mapper.WmsReceiptOrderMapper">
+    
+    <resultMap type="WmsReceiptOrder" id="WmsReceiptOrderResult">
+        <result property="id"    column="id"    />
+        <result property="receiptOrderNo"    column="receipt_order_no"    />
+        <result property="receiptOrderType"    column="receipt_order_type"    />
+        <result property="receiptOrderStatus"    column="receipt_order_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="waveNo"    column="wave_no"    />
+    </resultMap>
+
+    <sql id="selectWmsReceiptOrderVo">
+        select id, receipt_order_no, receipt_order_type, receipt_order_status, remark, del_flag, create_by, create_time, update_by, update_time, wave_no from wms_receipt_order
+    </sql>
+
+    <select id="selectWmsReceiptOrderList" parameterType="WmsReceiptOrder" resultMap="WmsReceiptOrderResult">
+        <include refid="selectWmsReceiptOrderVo"/>
+        <where>  
+            <if test="receiptOrderNo != null  and receiptOrderNo != ''"> and receipt_order_no = #{receiptOrderNo}</if>
+            <if test="receiptOrderType != null "> and receipt_order_type = #{receiptOrderType}</if>
+            <if test="receiptOrderStatus != null "> and receipt_order_status = #{receiptOrderStatus}</if>
+            <if test="waveNo != null  and waveNo != ''"> and wave_no = #{waveNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsReceiptOrderById" parameterType="Long" resultMap="WmsReceiptOrderResult">
+        <include refid="selectWmsReceiptOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWmsReceiptOrder" parameterType="WmsReceiptOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_receipt_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="receiptOrderNo != null">receipt_order_no,</if>
+            <if test="receiptOrderType != null">receipt_order_type,</if>
+            <if test="receiptOrderStatus != null">receipt_order_status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="waveNo != null">wave_no,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="receiptOrderNo != null">#{receiptOrderNo},</if>
+            <if test="receiptOrderType != null">#{receiptOrderType},</if>
+            <if test="receiptOrderStatus != null">#{receiptOrderStatus},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="waveNo != null">#{waveNo},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsReceiptOrder" parameterType="WmsReceiptOrder">
+        update wms_receipt_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="receiptOrderNo != null">receipt_order_no = #{receiptOrderNo},</if>
+            <if test="receiptOrderType != null">receipt_order_type = #{receiptOrderType},</if>
+            <if test="receiptOrderStatus != null">receipt_order_status = #{receiptOrderStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="waveNo != null">wave_no = #{waveNo},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWmsReceiptOrderById" parameterType="Long">
+        delete from wms_receipt_order where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsReceiptOrderByIds" parameterType="String">
+        delete from wms_receipt_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

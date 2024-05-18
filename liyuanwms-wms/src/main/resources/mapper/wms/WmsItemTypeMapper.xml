@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liyuan.wms.wms.mapper.WmsItemTypeMapper">
+    
+    <resultMap type="WmsItemType" id="WmsItemTypeResult">
+        <result property="itemTypeId"    column="item_type_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="typeName"    column="type_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWmsItemTypeVo">
+        select item_type_id, parent_id, ancestors, type_name, order_num, status, del_flag, create_by, create_time, update_by, update_time from wms_item_type
+    </sql>
+
+    <select id="selectWmsItemTypeList" parameterType="WmsItemType" resultMap="WmsItemTypeResult">
+        <include refid="selectWmsItemTypeVo"/>
+        <where>  
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="ancestors != null  and ancestors != ''"> and ancestors = #{ancestors}</if>
+            <if test="typeName != null  and typeName != ''"> and type_name like concat('%', #{typeName}, '%')</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsItemTypeByItemTypeId" parameterType="Long" resultMap="WmsItemTypeResult">
+        <include refid="selectWmsItemTypeVo"/>
+        where item_type_id = #{itemTypeId}
+    </select>
+        
+    <insert id="insertWmsItemType" parameterType="WmsItemType" useGeneratedKeys="true" keyProperty="itemTypeId">
+        insert into wms_item_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="typeName != null">type_name,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="typeName != null">#{typeName},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsItemType" parameterType="WmsItemType">
+        update wms_item_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="typeName != null">type_name = #{typeName},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where item_type_id = #{itemTypeId}
+    </update>
+
+    <delete id="deleteWmsItemTypeByItemTypeId" parameterType="Long">
+        delete from wms_item_type where item_type_id = #{itemTypeId}
+    </delete>
+
+    <delete id="deleteWmsItemTypeByItemTypeIds" parameterType="String">
+        delete from wms_item_type where item_type_id in 
+        <foreach item="itemTypeId" collection="array" open="(" separator="," close=")">
+            #{itemTypeId}
+        </foreach>
+    </delete>
+</mapper>

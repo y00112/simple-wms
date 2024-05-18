@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liyuan.wms.wms.mapper.WmsRackMapper">
+    
+    <resultMap type="WmsRack" id="WmsRackResult">
+        <result property="id"    column="id"    />
+        <result property="rackNo"    column="rack_no"    />
+        <result property="rackName"    column="rack_name"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="warehouseId"    column="warehouse_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWmsRackVo">
+        select id, rack_no, rack_name, area_id, warehouse_id, remark, del_flag, create_by, create_time, update_by, update_time from wms_rack
+    </sql>
+
+    <select id="selectWmsRackList" parameterType="WmsRack" resultMap="WmsRackResult">
+        <include refid="selectWmsRackVo"/>
+        <where>  
+            <if test="rackNo != null  and rackNo != ''"> and rack_no = #{rackNo}</if>
+            <if test="rackName != null  and rackName != ''"> and rack_name like concat('%', #{rackName}, '%')</if>
+            <if test="areaId != null "> and area_id = #{areaId}</if>
+            <if test="warehouseId != null "> and warehouse_id = #{warehouseId}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsRackById" parameterType="Long" resultMap="WmsRackResult">
+        <include refid="selectWmsRackVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWmsRack" parameterType="WmsRack" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_rack
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rackNo != null and rackNo != ''">rack_no,</if>
+            <if test="rackName != null">rack_name,</if>
+            <if test="areaId != null">area_id,</if>
+            <if test="warehouseId != null">warehouse_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rackNo != null and rackNo != ''">#{rackNo},</if>
+            <if test="rackName != null">#{rackName},</if>
+            <if test="areaId != null">#{areaId},</if>
+            <if test="warehouseId != null">#{warehouseId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsRack" parameterType="WmsRack">
+        update wms_rack
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="rackNo != null and rackNo != ''">rack_no = #{rackNo},</if>
+            <if test="rackName != null">rack_name = #{rackName},</if>
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="warehouseId != null">warehouse_id = #{warehouseId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWmsRackById" parameterType="Long">
+        delete from wms_rack where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsRackByIds" parameterType="String">
+        delete from wms_rack where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

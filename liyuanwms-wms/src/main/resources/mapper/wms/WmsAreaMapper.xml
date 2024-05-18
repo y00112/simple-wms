@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liyuan.wms.wms.mapper.WmsAreaMapper">
+    
+    <resultMap type="WmsArea" id="WmsAreaResult">
+        <result property="id"    column="id"    />
+        <result property="areaNo"    column="area_no"    />
+        <result property="areaName"    column="area_name"    />
+        <result property="warehouseId"    column="warehouse_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWmsAreaVo">
+        select id, area_no, area_name, warehouse_id, remark, del_flag, create_by, create_time, update_by, update_time from wms_area
+    </sql>
+
+    <select id="selectWmsAreaList" parameterType="WmsArea" resultMap="WmsAreaResult">
+        <include refid="selectWmsAreaVo"/>
+        <where>  
+            <if test="areaNo != null  and areaNo != ''"> and area_no = #{areaNo}</if>
+            <if test="areaName != null  and areaName != ''"> and area_name like concat('%', #{areaName}, '%')</if>
+            <if test="warehouseId != null "> and warehouse_id = #{warehouseId}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsAreaById" parameterType="Long" resultMap="WmsAreaResult">
+        <include refid="selectWmsAreaVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWmsArea" parameterType="WmsArea" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaNo != null and areaNo != ''">area_no,</if>
+            <if test="areaName != null and areaName != ''">area_name,</if>
+            <if test="warehouseId != null">warehouse_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="areaNo != null and areaNo != ''">#{areaNo},</if>
+            <if test="areaName != null and areaName != ''">#{areaName},</if>
+            <if test="warehouseId != null">#{warehouseId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsArea" parameterType="WmsArea">
+        update wms_area
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaNo != null and areaNo != ''">area_no = #{areaNo},</if>
+            <if test="areaName != null and areaName != ''">area_name = #{areaName},</if>
+            <if test="warehouseId != null">warehouse_id = #{warehouseId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWmsAreaById" parameterType="Long">
+        delete from wms_area where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsAreaByIds" parameterType="String">
+        delete from wms_area where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
