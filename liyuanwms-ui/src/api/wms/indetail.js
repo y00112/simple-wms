@@ -25,6 +25,13 @@ export function addInDetail(data) {
     data: data
   })
 }
+export function addsInDetail(data) {
+  return request({
+    url: '/wms/inDetail/adds',
+    method: 'post',
+    data: data
+  })
+}
 
 // 修改入库单详情
 export function updateInDetail(data) {
