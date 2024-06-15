@@ -21,7 +21,7 @@ public class WmsReceiptOrderDetail extends BaseEntity
 
     /** 入库单号 */
     @Excel(name = "入库单号")
-    private Long receiptOrderId;
+    private String receiptOrderNo;
 
     /** 资产 */
     @Excel(name = "资产")
@@ -29,7 +29,7 @@ public class WmsReceiptOrderDetail extends BaseEntity
 
     /** 入库数量 */
     @Excel(name = "入库数量")
-    private BigDecimal inQuantity;
+    private Long inQuantity;
 
     /** 所属货架 */
     @Excel(name = "所属货架")
@@ -54,115 +54,99 @@ public class WmsReceiptOrderDetail extends BaseEntity
     @Excel(name = "入库状态")
     private Integer receiptOrderStatus;
 
-    public void setId(Long id) 
-    {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getId() 
-    {
-        return id;
-    }
-    public void setReceiptOrderId(Long receiptOrderId) 
-    {
-        this.receiptOrderId = receiptOrderId;
+    public String getReceiptOrderNo() {
+        return receiptOrderNo;
     }
 
-    public Long getReceiptOrderId() 
-    {
-        return receiptOrderId;
+    public void setReceiptOrderNo(String receiptOrderNo) {
+        this.receiptOrderNo = receiptOrderNo;
     }
-    public void setItemId(Long itemId) 
-    {
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 
-    public Long getItemId() 
-    {
-        return itemId;
+    public Long getInQuantity() {
+        return inQuantity;
     }
-    public void setInQuantity(BigDecimal inQuantity) 
-    {
+
+    public void setInQuantity(Long inQuantity) {
         this.inQuantity = inQuantity;
     }
 
-    public BigDecimal getInQuantity() 
-    {
-        return inQuantity;
+    public Long getRackId() {
+        return rackId;
     }
-    public void setRackId(Long rackId) 
-    {
+
+    public void setRackId(Long rackId) {
         this.rackId = rackId;
     }
 
-    public Long getRackId() 
-    {
-        return rackId;
+    public BigDecimal getMoney() {
+        return money;
     }
-    public void setMoney(BigDecimal money) 
-    {
+
+    public void setMoney(BigDecimal money) {
         this.money = money;
     }
 
-    public BigDecimal getMoney() 
-    {
-        return money;
+    public Integer getDelFlag() {
+        return delFlag;
     }
-    public void setDelFlag(Integer delFlag) 
-    {
+
+    public void setDelFlag(Integer delFlag) {
         this.delFlag = delFlag;
     }
 
-    public Integer getDelFlag() 
-    {
-        return delFlag;
+    public Long getWarehouseId() {
+        return warehouseId;
     }
-    public void setWarehouseId(Long warehouseId) 
-    {
+
+    public void setWarehouseId(Long warehouseId) {
         this.warehouseId = warehouseId;
     }
 
-    public Long getWarehouseId() 
-    {
-        return warehouseId;
+    public Long getAreaId() {
+        return areaId;
     }
-    public void setAreaId(Long areaId) 
-    {
+
+    public void setAreaId(Long areaId) {
         this.areaId = areaId;
     }
 
-    public Long getAreaId() 
-    {
-        return areaId;
-    }
-    public void setReceiptOrderStatus(Integer receiptOrderStatus) 
-    {
-        this.receiptOrderStatus = receiptOrderStatus;
+    public Integer getReceiptOrderStatus() {
+        return receiptOrderStatus;
     }
 
-    public Integer getReceiptOrderStatus() 
-    {
-        return receiptOrderStatus;
+    public void setReceiptOrderStatus(Integer receiptOrderStatus) {
+        this.receiptOrderStatus = receiptOrderStatus;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("receiptOrderId", getReceiptOrderId())
-            .append("itemId", getItemId())
-            .append("inQuantity", getInQuantity())
-            .append("rackId", getRackId())
-            .append("money", getMoney())
-            .append("delFlag", getDelFlag())
-            .append("remark", getRemark())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("warehouseId", getWarehouseId())
-            .append("areaId", getAreaId())
-            .append("receiptOrderStatus", getReceiptOrderStatus())
-            .toString();
+        return "WmsReceiptOrderDetail{" +
+                "id=" + id +
+                ", receiptOrderNo='" + receiptOrderNo + '\'' +
+                ", itemId=" + itemId +
+                ", inQuantity=" + inQuantity +
+                ", rackId=" + rackId +
+                ", money=" + money +
+                ", delFlag=" + delFlag +
+                ", warehouseId=" + warehouseId +
+                ", areaId=" + areaId +
+                ", receiptOrderStatus=" + receiptOrderStatus +
+                '}';
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.liyuan.wms.wms.domain.WmsWarehouse;
+import com.liyuan.wms.wms.service.IWmsItemService;
 import com.liyuan.wms.wms.service.IWmsWarehouseService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class WmsWarehouseController extends BaseController
 {
     @Autowired
     private IWmsWarehouseService wmsWarehouseService;
+
 
     /**
      * 查询仓库列表

@@ -30,6 +30,9 @@ public class WmsReceiptOrder extends BaseEntity
     @Excel(name = "入库状态")
     private Integer receiptOrderStatus;
 
+    @Excel(name = "入库人")
+    private String depositor;
+
     /** 删除标识 */
     private Integer delFlag;
 
@@ -46,66 +49,65 @@ public class WmsReceiptOrder extends BaseEntity
     {
         return id;
     }
-    public void setReceiptOrderNo(String receiptOrderNo) 
-    {
+
+    public String getReceiptOrderNo() {
+        return receiptOrderNo;
+    }
+
+    public void setReceiptOrderNo(String receiptOrderNo) {
         this.receiptOrderNo = receiptOrderNo;
     }
 
-    public String getReceiptOrderNo() 
-    {
-        return receiptOrderNo;
+    public Long getReceiptOrderType() {
+        return receiptOrderType;
     }
-    public void setReceiptOrderType(Long receiptOrderType) 
-    {
+
+    public void setReceiptOrderType(Long receiptOrderType) {
         this.receiptOrderType = receiptOrderType;
     }
 
-    public Long getReceiptOrderType() 
-    {
-        return receiptOrderType;
+    public Integer getReceiptOrderStatus() {
+        return receiptOrderStatus;
     }
-    public void setReceiptOrderStatus(Integer receiptOrderStatus) 
-    {
+
+    public void setReceiptOrderStatus(Integer receiptOrderStatus) {
         this.receiptOrderStatus = receiptOrderStatus;
     }
 
-    public Integer getReceiptOrderStatus() 
-    {
-        return receiptOrderStatus;
+    public String getDepositor() {
+        return depositor;
     }
-    public void setDelFlag(Integer delFlag) 
-    {
+
+    public void setDepositor(String depositor) {
+        this.depositor = depositor;
+    }
+
+    public Integer getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(Integer delFlag) {
         this.delFlag = delFlag;
     }
 
-    public Integer getDelFlag() 
-    {
-        return delFlag;
-    }
-    public void setWaveNo(String waveNo) 
-    {
-        this.waveNo = waveNo;
+    public String getWaveNo() {
+        return waveNo;
     }
 
-    public String getWaveNo() 
-    {
-        return waveNo;
+    public void setWaveNo(String waveNo) {
+        this.waveNo = waveNo;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("receiptOrderNo", getReceiptOrderNo())
-            .append("receiptOrderType", getReceiptOrderType())
-            .append("receiptOrderStatus", getReceiptOrderStatus())
-            .append("remark", getRemark())
-            .append("delFlag", getDelFlag())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("waveNo", getWaveNo())
-            .toString();
+        return "WmsReceiptOrder{" +
+                "id=" + id +
+                ", receiptOrderNo='" + receiptOrderNo + '\'' +
+                ", receiptOrderType=" + receiptOrderType +
+                ", receiptOrderStatus=" + receiptOrderStatus +
+                ", depositor=" + depositor +
+                ", delFlag=" + delFlag +
+                ", waveNo='" + waveNo + '\'' +
+                '}';
     }
 }

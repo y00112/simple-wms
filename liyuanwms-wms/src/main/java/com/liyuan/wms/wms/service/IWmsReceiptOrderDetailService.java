@@ -1,6 +1,9 @@
 package com.liyuan.wms.wms.service;
 
 import java.util.List;
+
+import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailRespVO;
+import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailsAddsVO;
 import com.liyuan.wms.wms.domain.WmsReceiptOrderDetail;
 
 /**
@@ -25,7 +28,8 @@ public interface IWmsReceiptOrderDetailService
      * @param wmsReceiptOrderDetail 入库单详情
      * @return 入库单详情集合
      */
-    public List<WmsReceiptOrderDetail> selectWmsReceiptOrderDetailList(WmsReceiptOrderDetail wmsReceiptOrderDetail);
+    public List<WmsReceiptOrderDetailRespVO> selectWmsReceiptOrderDetailList(WmsReceiptOrderDetail wmsReceiptOrderDetail);
+
 
     /**
      * 新增入库单详情
@@ -58,4 +62,6 @@ public interface IWmsReceiptOrderDetailService
      * @return 结果
      */
     public int deleteWmsReceiptOrderDetailById(Long id);
+
+    int adds(WmsReceiptOrderDetailsAddsVO vo);
 }
