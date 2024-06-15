@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="receiptOrderStatus"    column="receipt_order_status"    />
         <result property="remark"    column="remark"    />
         <result property="delFlag"    column="del_flag"    />
+        <result property="depositor" column="depositor"/>
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
@@ -19,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectWmsReceiptOrderVo">
-        select id, receipt_order_no, receipt_order_type, receipt_order_status, remark, del_flag, create_by, create_time, update_by, update_time, wave_no from wms_receipt_order
+        select id, receipt_order_no, receipt_order_type, receipt_order_status,depositor, remark, del_flag, create_by, create_time, update_by, update_time, wave_no from wms_receipt_order
     </sql>
 
     <select id="selectWmsReceiptOrderList" parameterType="WmsReceiptOrder" resultMap="WmsReceiptOrderResult">
@@ -46,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="remark != null">remark,</if>
             <if test="delFlag != null">del_flag,</if>
             <if test="createBy != null">create_by,</if>
+            <if test="depositor != null">depositor,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
@@ -57,6 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="receiptOrderStatus != null">#{receiptOrderStatus},</if>
             <if test="remark != null">#{remark},</if>
             <if test="delFlag != null">#{delFlag},</if>
+            <if test="depositor != null">#{depositor},</if>
             <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
@@ -71,6 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="receiptOrderNo != null">receipt_order_no = #{receiptOrderNo},</if>
             <if test="receiptOrderType != null">receipt_order_type = #{receiptOrderType},</if>
             <if test="receiptOrderStatus != null">receipt_order_status = #{receiptOrderStatus},</if>
+            <if test="depositor != null">depositor = #{depositor},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
             <if test="createBy != null">create_by = #{createBy},</if>

@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="WmsReceiptOrderDetail" id="WmsReceiptOrderDetailResult">
         <result property="id"    column="id"    />
-        <result property="receiptOrderId"    column="receipt_order_id"    />
+        <result property="receiptOrderNo"    column="receipt_order_no"    />
         <result property="itemId"    column="item_id"    />
         <result property="inQuantity"    column="in_quantity"    />
         <result property="rackId"    column="rack_id"    />
@@ -23,13 +23,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectWmsReceiptOrderDetailVo">
-        select id, receipt_order_id, item_id, in_quantity, rack_id, money, del_flag, remark, create_by, create_time, update_by, update_time, warehouse_id, area_id, receipt_order_status from wms_receipt_order_detail
+        select id, receipt_order_no, item_id, in_quantity, rack_id, money, del_flag, remark, create_by, create_time, update_by, update_time, warehouse_id, area_id, receipt_order_status from wms_receipt_order_detail
     </sql>
 
     <select id="selectWmsReceiptOrderDetailList" parameterType="WmsReceiptOrderDetail" resultMap="WmsReceiptOrderDetailResult">
         <include refid="selectWmsReceiptOrderDetailVo"/>
         <where>  
-            <if test="receiptOrderId != null "> and receipt_order_id = #{receiptOrderId}</if>
+            <if test="receiptOrderNo != null "> and receipt_order_no = #{receiptOrderNo}</if>
             <if test="itemId != null "> and item_id = #{itemId}</if>
             <if test="inQuantity != null "> and in_quantity = #{inQuantity}</if>
             <if test="rackId != null "> and rack_id = #{rackId}</if>
@@ -48,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertWmsReceiptOrderDetail" parameterType="WmsReceiptOrderDetail" useGeneratedKeys="true" keyProperty="id">
         insert into wms_receipt_order_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="receiptOrderId != null">receipt_order_id,</if>
+            <if test="receiptOrderNo != null">receipt_order_no,</if>
             <if test="itemId != null">item_id,</if>
             <if test="inQuantity != null">in_quantity,</if>
             <if test="rackId != null">rack_id,</if>
@@ -64,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="receiptOrderStatus != null">receipt_order_status,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="receiptOrderId != null">#{receiptOrderId},</if>
+            <if test="receiptOrderNo != null">#{receiptOrderNo},</if>
             <if test="itemId != null">#{itemId},</if>
             <if test="inQuantity != null">#{inQuantity},</if>
             <if test="rackId != null">#{rackId},</if>
@@ -84,7 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateWmsReceiptOrderDetail" parameterType="WmsReceiptOrderDetail">
         update wms_receipt_order_detail
         <trim prefix="SET" suffixOverrides=",">
-            <if test="receiptOrderId != null">receipt_order_id = #{receiptOrderId},</if>
+            <if test="receiptOrderNo != null">receipt_order_no = #{receiptOrderNo},</if>
             <if test="itemId != null">item_id = #{itemId},</if>
             <if test="inQuantity != null">in_quantity = #{inQuantity},</if>
             <if test="rackId != null">rack_id = #{rackId},</if>
