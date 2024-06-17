@@ -60,7 +60,9 @@
                      plain
                      icon="el-icon-setting"
                      size="small"
-                     @click="onBatchSetInventory">批量设置仓库/库区</el-button>
+                     @click="onBatchSetInventory"
+                     v-if="!form.id">批量设置仓库/库区</el-button>
+
         </el-col>
         <el-col :span="2.5">
           <el-button type="primary"
@@ -81,23 +83,26 @@
                   style="margin-top: 20px;">
           <el-table-column type="selection"
                            width="55"
-                           align="center" />
+                           align="center"
+                           :selectable="isRow" />
           <el-table-column label="物料名"
                            align="center"
                            prop="itemName" />
           <el-table-column label="物料编号"
                            align="center"
                            prop="itemNo" />
-          <el-table-column label="计划数量"
+          <el-table-column label="入库数量"
                            align="center"
                            prop="inQuantity">
             <template slot-scope="scope">
               <el-form-item :prop="'inOrderList.' + scope.$index + '.inQuantity'"
-                            :rules="formRules.inQuantity">
+                            :rules="formRules.inQuantity"
+                            v-if="!form.id">
                 <el-input-number v-model="scope.row.inQuantity"
                                  :min="1"
                                  size="small"></el-input-number>
               </el-form-item>
+              <div v-if="form.id">{{scope.row.inQuantity}}</div>
             </template>
           </el-table-column>
           <el-table-column label="仓库/库区"
@@ -105,25 +110,42 @@
                            prop="place">
             <template slot-scope="scope">
               <el-form-item :prop="'inOrderList.' + scope.$index + '.place'"
-                            :rules="formRules.place">
+                            :rules="formRules.place"
+                            v-if="!form.id">
                 <WmsWarehouseCascader v-model="scope.row.place"
-                                      size="small"></WmsWarehouseCascader>
+                                      size="small"
+                                      :disabled="!!form.id"></WmsWarehouseCascader>
               </el-form-item>
+              <WmsWarehouseCascader v-model="scope.row.place"
+                                    size="small"
+                                    disabled
+                                    v-if="form.id"></WmsWarehouseCascader>
             </template>
           </el-table-column>
-          <el-table-column label="金额"
+          <el-table-column label="入库状态"
+                           align="center"
+                           prop="receiptOrderStatus"
+                           v-if="form.id">
+            <template slot-scope="scope">
+              <dict-tag :options="dict.type.receipt_order_status"
+                        :value="scope.row.receiptOrderStatus" />
+            </template>
+          </el-table-column>
+          <!-- <el-table-column label="金额"
                            align="center"
                            prop="money">
             <template slot-scope="scope">
               <el-form-item :prop="'inOrderList.' + scope.$index + '.money'"
-                            :rules="formRules.money">
+                            :rules="formRules.money"
+                            v-if="!form.id">
                 <el-input-number v-model="scope.row.money"
                                  :min="0.01"
                                  :precision="2"
                                  size="small"></el-input-number>
               </el-form-item>
+              <div v-if="form.id">{{scope.row.money}}</div>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column label="操作"
                            align="center"
                            class-name="small-padding fixed-width">
@@ -131,7 +153,13 @@
               <el-button size="mini"
                          type="text"
                          icon="el-icon-delete"
-                         @click="handleDelete(scope.row)">删除</el-button>
+                         @click="handleDelete(scope.row)"
+                         v-if="!form.id">删除</el-button>
+              <el-button size="mini"
+                         type="text"
+                         icon="el-icon-setting"
+                         v-if="form.id && scope.row.receiptOrderStatus == 1"
+                         @click="handleStatusChange(scope.row)">入库</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -149,7 +177,14 @@
                    size="small">取 消</el-button>
         <el-button type="primary"
                    @click="submitForm"
-                   size="small">保 存</el-button>
+                   size="small"
+                   v-if="!form.id">保 存</el-button>
+        <el-button type="success"
+                   plain
+                   icon="el-icon-setting"
+                   size="small"
+                   v-if="form.id"
+                   @click="handleStatusChangeAll">批量入库</el-button>
       </div>
     </div>
     <el-dialog title="添加物料"
@@ -193,13 +228,10 @@
   </div>
 </template>
 <script>
-import { listRack } from "@/api/wms/rack"
 import { listItem } from "@/api/wms/item";
-import { listArea } from '@/api/wms/area'
-import { listWarehouse } from '@/api/wms/warehouse'
 import { randomId } from '@/utils/RandomUtils'
 import { getInOrder, addInOrder, updateInOrder } from "@/api/wms/inorder";
-import { listInDetail, getInDetail, delInDetail, addsInDetail, updateInDetail } from "@/api/wms/indetail";
+import { listInDetail, addsInDetail, updateInDetail, changeStatus } from "@/api/wms/indetail";
 import BatchWarehouseDialog from "@/views/wms/components/BatchWarehouseDialog/index.vue";
 import WmsWarehouseCascader from '../components/WmsWarehouseCascader/index.vue'
 export default {
@@ -272,6 +304,7 @@ export default {
       batchForm: {
         place: []
       },
+      changeStatusList: []
     };
   },
   created () {
@@ -286,12 +319,15 @@ export default {
       if (id) {
         const res = await getInOrder(id)
         this.form = res.data
-        const query = {
-          receiptOrderNo: this.form.receiptOrderNo,
-        }
-        const list = await listInDetail(query)
-        this.formData.inOrderList = list.rows
+        this.getinOrderList()
       }
+    },
+    async getinOrderList () {
+      const query = {
+        receiptOrderNo: this.form.receiptOrderNo,
+      }
+      const list = await listInDetail(query)
+      this.formData.inOrderList = list.rows
     },
     /** 查询物料列表 */
     addMaterials () {
@@ -349,6 +385,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange (selection) {
+      this.changeStatusList = selection
       this.ids = selection.map(item => item.id)
       this.multiple = !selection.length
     },
@@ -380,6 +417,7 @@ export default {
       await this.$refs["formRef"].validate()
       this.formData.inOrderList.forEach(item => {
         console.log(item);
+        item.receiptOrderStatus = 1;
         if (item.place[0]) {
           item.warehouseId = item.place[0]
         } if (item.place[1]) {
@@ -413,7 +451,32 @@ export default {
       if (index !== -1) {
         this.formData.inOrderList.splice(index, 1)
       }
-    }
+    },
+    // 单个入库 状态修改
+    async handleStatusChange (row) {
+      try {
+        await changeStatus({ list: [row] })
+        this.$modal.msgSuccess("入库成功");
+        this.getinOrderList()
+      } catch { }
+    },
+    isRow (row) {
+      return !(row.receiptOrderStatus == 2)
+    },
+    // 批量入库
+    async handleStatusChangeAll () {
+      // 未选中
+      if (!this.ids.length) {
+        this.$modal.msgError('请先选择入库的物料')
+        return
+      }
+      try {
+        await changeStatus({ list: this.changeStatusList })
+        this.$modal.msgSuccess("入库成功");
+        this.getinOrderList()
+      } catch { }
+
+    },
   }
 }
 

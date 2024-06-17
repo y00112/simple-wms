@@ -66,11 +66,14 @@
     </el-row>
 
     <el-table v-loading="loading"
-              :data="inOrderList"
-              @selection-change="handleSelectionChange">
-      <el-table-column type="selection"
-                       width="55"
-                       align="center" />
+              :data="inOrderList">
+      <el-table-column label="序号"
+                       width="100"
+                       align="center">
+        <template slot-scope="scope">
+          {{ total - ((queryParams.pageNum-1)*queryParams.pageSize) - scope.$index}}
+        </template>
+      </el-table-column>
       <el-table-column label="入库单号"
                        align="center"
                        prop="receiptOrderNo" />
@@ -195,12 +198,6 @@ export default {
     resetQuery () {
       this.resetForm("queryForm");
       this.handleQuery();
-    },
-    // 多选框选中数据
-    handleSelectionChange (selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length !== 1
-      this.multiple = !selection.length
     },
     /** 新增按钮操作 */
     handleAdd () {

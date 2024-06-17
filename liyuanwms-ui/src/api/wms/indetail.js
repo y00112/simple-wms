@@ -32,6 +32,14 @@ export function addsInDetail(data) {
     data: data
   })
 }
+// 修改入库状态
+export function changeStatus(data) {
+  return request({
+    url: '/wms/inDetail/edits',
+    method: 'post',
+    data: data
+  })
+}
 
 // 修改入库单详情
 export function updateInDetail(data) {
