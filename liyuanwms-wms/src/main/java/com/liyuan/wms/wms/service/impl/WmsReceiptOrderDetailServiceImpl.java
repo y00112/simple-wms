@@ -6,7 +6,7 @@ import java.util.List;
 import com.liyuan.wms.common.utils.DateUtils;
 import com.liyuan.wms.wms.controller.vo.WmsItemVO;
 import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailRespVO;
-import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailsAddsVO;
+import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailsVO;
 import com.liyuan.wms.wms.service.IWmsItemService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,11 @@ public class WmsReceiptOrderDetailServiceImpl implements IWmsReceiptOrderDetailS
             WmsReceiptOrderDetailRespVO vo = new WmsReceiptOrderDetailRespVO();
             BeanUtils.copyProperties(receiptOrderDetail, vo);
             WmsItemVO item = wmsItemService.selectWmsItemById(receiptOrderDetail.getItemId());
-            List<Long> place = handlePlace(receiptOrderDetail);
+            vo.setWarehouseId(item.getWarehouseId());
+            vo.setAreaId(item.getAreaId());
+            vo.setRackId(item.getRackId());
+            vo.setQuantity(item.getQuantity());
+            List<Long> place = handlePlace(vo);
             vo.setItemName(item.getItemName());
             vo.setItemNo(item.getItemNo());
             vo.setPlace(place);
@@ -63,16 +67,16 @@ public class WmsReceiptOrderDetailServiceImpl implements IWmsReceiptOrderDetailS
         return result;
     }
 
-    private List<Long> handlePlace(WmsReceiptOrderDetail receiptOrderDetail) {
+    private List<Long> handlePlace(WmsReceiptOrderDetailRespVO vo) {
         List<Long> place = new ArrayList<>();
-        if (receiptOrderDetail.getWarehouseId() != null && receiptOrderDetail.getWarehouseId() != 0) {
-            place.add(receiptOrderDetail.getWarehouseId());
+        if (vo.getWarehouseId() != null && vo.getWarehouseId() != 0) {
+            place.add(vo.getWarehouseId());
         }
-        if (receiptOrderDetail.getAreaId() != null && receiptOrderDetail.getAreaId() != 0) {
-            place.add(receiptOrderDetail.getAreaId());
+        if (vo.getAreaId() != null && vo.getAreaId() != 0) {
+            place.add(vo.getAreaId());
         }
-        if (receiptOrderDetail.getRackId() != null && receiptOrderDetail.getRackId() != 0) {
-            place.add(receiptOrderDetail.getRackId());
+        if (vo.getRackId() != null && vo.getRackId() != 0) {
+            place.add(vo.getRackId());
         }
         return place;
     }
@@ -129,15 +133,25 @@ public class WmsReceiptOrderDetailServiceImpl implements IWmsReceiptOrderDetailS
     }
 
     @Override
-    public int adds(WmsReceiptOrderDetailsAddsVO vo) {
+    public int adds(WmsReceiptOrderDetailsVO vo) {
+        vo.getList().forEach(item -> {
+            item.setCreateTime(DateUtils.getNowDate());
+            wmsReceiptOrderDetailMapper.insertWmsReceiptOrderDetail(item);
+        });
+        return 1;
+    }
+
+    @Override
+    public int edits(WmsReceiptOrderDetailsVO vo) {
         vo.getList().forEach(item -> {
             // 修改资产库存
             WmsItemVO wmsItemVO = wmsItemService.selectWmsItemById(item.getItemId());
             wmsItemVO.setQuantity(wmsItemVO.getQuantity() + item.getInQuantity());
             wmsItemService.updateWmsItem(wmsItemVO);
 
-            item.setCreateTime(DateUtils.getNowDate());
-            wmsReceiptOrderDetailMapper.insertWmsReceiptOrderDetail(item);
+            item.setReceiptOrderStatus(2);
+            item.setUpdateTime(DateUtils.getNowDate());
+            wmsReceiptOrderDetailMapper.updateWmsReceiptOrderDetail(item);
         });
         return 1;
     }

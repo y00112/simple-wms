@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liyuan.wms.wms.mapper.WmsShipmentOrderMapper">
+    
+    <resultMap type="WmsShipmentOrder" id="WmsShipmentOrderResult">
+        <result property="id"    column="id"    />
+        <result property="shipmentOrderNo"    column="shipment_order_no"    />
+        <result property="shipmentOrderType"    column="shipment_order_type"    />
+        <result property="recipient"    column="recipient"    />
+        <result property="shipmentOrderStatus"    column="shipment_order_status"    />
+        <result property="waveNo"    column="wave_no"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFalg"    column="del_falg"    />
+    </resultMap>
+
+    <sql id="selectWmsShipmentOrderVo">
+        select id, shipment_order_no, shipment_order_type, recipient, shipment_order_status, wave_no, remark, create_by, create_time, update_by, update_time, del_falg from wms_shipment_order
+    </sql>
+
+    <select id="selectWmsShipmentOrderList" parameterType="WmsShipmentOrder" resultMap="WmsShipmentOrderResult">
+        <include refid="selectWmsShipmentOrderVo"/>
+        <where>  
+            <if test="shipmentOrderNo != null  and shipmentOrderNo != ''"> and shipment_order_no = #{shipmentOrderNo}</if>
+            <if test="shipmentOrderType != null "> and shipment_order_type = #{shipmentOrderType}</if>
+            <if test="recipient != null  and recipient != ''"> and recipient = #{recipient}</if>
+            <if test="shipmentOrderStatus != null "> and shipment_order_status = #{shipmentOrderStatus}</if>
+            <if test="waveNo != null  and waveNo != ''"> and wave_no = #{waveNo}</if>
+            <if test="delFalg != null "> and del_falg = #{delFalg}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsShipmentOrderById" parameterType="Long" resultMap="WmsShipmentOrderResult">
+        <include refid="selectWmsShipmentOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWmsShipmentOrder" parameterType="WmsShipmentOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_shipment_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shipmentOrderNo != null">shipment_order_no,</if>
+            <if test="shipmentOrderType != null">shipment_order_type,</if>
+            <if test="recipient != null">recipient,</if>
+            <if test="shipmentOrderStatus != null">shipment_order_status,</if>
+            <if test="waveNo != null">wave_no,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFalg != null">del_falg,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shipmentOrderNo != null">#{shipmentOrderNo},</if>
+            <if test="shipmentOrderType != null">#{shipmentOrderType},</if>
+            <if test="recipient != null">#{recipient},</if>
+            <if test="shipmentOrderStatus != null">#{shipmentOrderStatus},</if>
+            <if test="waveNo != null">#{waveNo},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFalg != null">#{delFalg},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsShipmentOrder" parameterType="WmsShipmentOrder">
+        update wms_shipment_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shipmentOrderNo != null">shipment_order_no = #{shipmentOrderNo},</if>
+            <if test="shipmentOrderType != null">shipment_order_type = #{shipmentOrderType},</if>
+            <if test="recipient != null">recipient = #{recipient},</if>
+            <if test="shipmentOrderStatus != null">shipment_order_status = #{shipmentOrderStatus},</if>
+            <if test="waveNo != null">wave_no = #{waveNo},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFalg != null">del_falg = #{delFalg},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWmsShipmentOrderById" parameterType="Long">
+        delete from wms_shipment_order where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsShipmentOrderByIds" parameterType="String">
+        delete from wms_shipment_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

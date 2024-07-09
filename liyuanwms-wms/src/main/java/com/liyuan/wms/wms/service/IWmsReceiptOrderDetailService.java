@@ -3,7 +3,7 @@ package com.liyuan.wms.wms.service;
 import java.util.List;
 
 import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailRespVO;
-import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailsAddsVO;
+import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailsVO;
 import com.liyuan.wms.wms.domain.WmsReceiptOrderDetail;
 
 /**
@@ -63,5 +63,7 @@ public interface IWmsReceiptOrderDetailService
      */
     public int deleteWmsReceiptOrderDetailById(Long id);
 
-    int adds(WmsReceiptOrderDetailsAddsVO vo);
+    int adds(WmsReceiptOrderDetailsVO vo);
+
+    int edits(WmsReceiptOrderDetailsVO vo);
 }

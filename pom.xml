@@ -9,8 +9,7 @@
     <version>3.8.7</version>
 
     <name>liyuanwms</name>
-    <url>http://www.ruoyi.vip</url>
-    <description>力源轻量级WMS</description>
+    <description>物资领用</description>
     
     <properties>
         <liyuanwms.version>3.8.7</liyuanwms.version>

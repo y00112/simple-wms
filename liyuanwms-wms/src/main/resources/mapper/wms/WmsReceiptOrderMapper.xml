@@ -30,7 +30,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="receiptOrderType != null "> and receipt_order_type = #{receiptOrderType}</if>
             <if test="receiptOrderStatus != null "> and receipt_order_status = #{receiptOrderStatus}</if>
             <if test="waveNo != null  and waveNo != ''"> and wave_no = #{waveNo}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
         </where>
+        order by create_time desc
     </select>
     
     <select id="selectWmsReceiptOrderById" parameterType="Long" resultMap="WmsReceiptOrderResult">
