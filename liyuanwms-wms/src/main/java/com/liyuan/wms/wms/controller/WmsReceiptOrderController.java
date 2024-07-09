@@ -2,6 +2,7 @@ package com.liyuan.wms.wms.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,14 +24,13 @@ import com.liyuan.wms.common.core.page.TableDataInfo;
 
 /**
  * 入库单Controller
- * 
+ *
  * @author zhaoyss
  * @date 2024-04-28
  */
 @RestController
 @RequestMapping("/wms/inOrder")
-public class WmsReceiptOrderController extends BaseController
-{
+public class WmsReceiptOrderController extends BaseController {
     @Autowired
     private IWmsReceiptOrderService wmsReceiptOrderService;
 
@@ -39,8 +39,7 @@ public class WmsReceiptOrderController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('wms:inOrder:list')")
     @GetMapping("/list")
-    public TableDataInfo list(WmsReceiptOrder wmsReceiptOrder)
-    {
+    public TableDataInfo list(WmsReceiptOrder wmsReceiptOrder) {
         startPage();
         List<WmsReceiptOrder> list = wmsReceiptOrderService.selectWmsReceiptOrderList(wmsReceiptOrder);
         return getDataTable(list);
@@ -52,8 +51,7 @@ public class WmsReceiptOrderController extends BaseController
     @PreAuthorize("@ss.hasPermi('wms:inOrder:export')")
     @Log(title = "入库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, WmsReceiptOrder wmsReceiptOrder)
-    {
+    public void export(HttpServletResponse response, WmsReceiptOrder wmsReceiptOrder) {
         List<WmsReceiptOrder> list = wmsReceiptOrderService.selectWmsReceiptOrderList(wmsReceiptOrder);
         ExcelUtil<WmsReceiptOrder> util = new ExcelUtil<WmsReceiptOrder>(WmsReceiptOrder.class);
         util.exportExcel(response, list, "入库单数据");
@@ -64,8 +62,7 @@ public class WmsReceiptOrderController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('wms:inOrder:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") Long id) {
         return success(wmsReceiptOrderService.selectWmsReceiptOrderById(id));
     }
 
@@ -75,8 +72,7 @@ public class WmsReceiptOrderController extends BaseController
     @PreAuthorize("@ss.hasPermi('wms:inOrder:add')")
     @Log(title = "入库单", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody WmsReceiptOrder wmsReceiptOrder)
-    {
+    public AjaxResult add(@RequestBody WmsReceiptOrder wmsReceiptOrder) {
         return toAjax(wmsReceiptOrderService.insertWmsReceiptOrder(wmsReceiptOrder));
     }
 
@@ -86,8 +82,7 @@ public class WmsReceiptOrderController extends BaseController
     @PreAuthorize("@ss.hasPermi('wms:inOrder:edit')")
     @Log(title = "入库单", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody WmsReceiptOrder wmsReceiptOrder)
-    {
+    public AjaxResult edit(@RequestBody WmsReceiptOrder wmsReceiptOrder) {
         return toAjax(wmsReceiptOrderService.updateWmsReceiptOrder(wmsReceiptOrder));
     }
 
@@ -96,9 +91,8 @@ public class WmsReceiptOrderController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('wms:inOrder:remove')")
     @Log(title = "入库单", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(wmsReceiptOrderService.deleteWmsReceiptOrderByIds(ids));
     }
 }

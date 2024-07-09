@@ -1,11 +1,10 @@
 package com.liyuan.wms.wms.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.liyuan.wms.wms.controller.vo.WmsItemCountVO;
 import com.liyuan.wms.wms.controller.vo.WmsItemVO;
-import com.liyuan.wms.wms.service.IWmsItemTypeService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +36,14 @@ public class WmsItemController extends BaseController
 {
     @Autowired
     private IWmsItemService wmsItemService;
+
+
+    @PreAuthorize("@ss.hasPermi('wms:item:list')")
+    @GetMapping("/count")
+    public AjaxResult count(){
+        List<WmsItemCountVO> list = wmsItemService.count();
+        return success(list);
+    }
 
     /**
      * 查询资产列表

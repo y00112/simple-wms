@@ -1,7 +1,10 @@
 package com.liyuan.wms.wms.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.liyuan.wms.wms.controller.vo.WmsItemCountVO;
 import com.liyuan.wms.wms.controller.vo.WmsItemVO;
 import com.liyuan.wms.wms.domain.WmsItem;
 
@@ -60,4 +63,11 @@ public interface IWmsItemService
      * @return 结果
      */
     public int deleteWmsItemById(Long id);
+
+    /**
+     * 资产类型统计
+     *
+     * @return
+     */
+    List<WmsItemCountVO> count();
 }

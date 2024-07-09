@@ -35,7 +35,7 @@ public class WmsItem extends BaseEntity
 
     /** 分类 */
     @Excel(name = "分类")
-    private String itemType;
+    private Long itemType;
 
     /** 单位类别 */
     @Excel(name = "单位类别")
@@ -76,7 +76,7 @@ public class WmsItem extends BaseEntity
     private String batch;
 
     /** 删除标识 */
-    private Boolean delFlag;
+    private Integer delFlag;
 
     public void setId(Long id) 
     {
@@ -114,12 +114,12 @@ public class WmsItem extends BaseEntity
     {
         return specification;
     }
-    public void setItemType(String itemType) 
+    public void setItemType(Long itemType)
     {
         this.itemType = itemType;
     }
 
-    public String getItemType() 
+    public Long getItemType()
     {
         return itemType;
     }
@@ -204,12 +204,12 @@ public class WmsItem extends BaseEntity
     {
         return batch;
     }
-    public void setDelFlag(Boolean delFlag) 
+    public void setDelFlag(Integer delFlag)
     {
         this.delFlag = delFlag;
     }
 
-    public Boolean getDelFlag() 
+    public Integer getDelFlag()
     {
         return delFlag;
     }

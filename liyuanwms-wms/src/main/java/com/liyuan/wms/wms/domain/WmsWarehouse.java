@@ -27,7 +27,7 @@ public class WmsWarehouse extends BaseEntity
     private String warehouseName;
 
     /** 删除标识 */
-    private Boolean delFlag;
+    private Integer delFlag;
 
     public void setId(Long id) 
     {
@@ -56,12 +56,12 @@ public class WmsWarehouse extends BaseEntity
     {
         return warehouseName;
     }
-    public void setDelFlag(Boolean delFlag) 
+    public void setDelFlag(Integer delFlag)
     {
         this.delFlag = delFlag;
     }
 
-    public Boolean getDelFlag() 
+    public Integer getDelFlag()
     {
         return delFlag;
     }

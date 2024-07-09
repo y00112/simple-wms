@@ -31,24 +31,12 @@ public class WmsReceiptOrderDetail extends BaseEntity
     @Excel(name = "入库数量")
     private Long inQuantity;
 
-    /** 所属货架 */
-    @Excel(name = "所属货架")
-    private Long rackId;
-
     /** 金额 */
     @Excel(name = "金额")
     private BigDecimal money;
 
     /** 删除标识 */
     private Integer delFlag;
-
-    /** 所属仓库 */
-    @Excel(name = "所属仓库")
-    private Long warehouseId;
-
-    /** 所属库区 */
-    @Excel(name = "所属库区")
-    private Long areaId;
 
     /** 入库状态 */
     @Excel(name = "入库状态")
@@ -86,14 +74,6 @@ public class WmsReceiptOrderDetail extends BaseEntity
         this.inQuantity = inQuantity;
     }
 
-    public Long getRackId() {
-        return rackId;
-    }
-
-    public void setRackId(Long rackId) {
-        this.rackId = rackId;
-    }
-
     public BigDecimal getMoney() {
         return money;
     }
@@ -108,22 +88,6 @@ public class WmsReceiptOrderDetail extends BaseEntity
 
     public void setDelFlag(Integer delFlag) {
         this.delFlag = delFlag;
-    }
-
-    public Long getWarehouseId() {
-        return warehouseId;
-    }
-
-    public void setWarehouseId(Long warehouseId) {
-        this.warehouseId = warehouseId;
-    }
-
-    public Long getAreaId() {
-        return areaId;
-    }
-
-    public void setAreaId(Long areaId) {
-        this.areaId = areaId;
     }
 
     public Integer getReceiptOrderStatus() {
@@ -141,11 +105,8 @@ public class WmsReceiptOrderDetail extends BaseEntity
                 ", receiptOrderNo='" + receiptOrderNo + '\'' +
                 ", itemId=" + itemId +
                 ", inQuantity=" + inQuantity +
-                ", rackId=" + rackId +
                 ", money=" + money +
                 ", delFlag=" + delFlag +
-                ", warehouseId=" + warehouseId +
-                ", areaId=" + areaId +
                 ", receiptOrderStatus=" + receiptOrderStatus +
                 '}';
     }

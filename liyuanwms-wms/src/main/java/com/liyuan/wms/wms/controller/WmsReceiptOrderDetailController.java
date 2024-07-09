@@ -1,10 +1,9 @@
 package com.liyuan.wms.wms.controller;
 
 import java.util.List;
-import javax.servlet.http.HttpServletResponse;
 
 import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailRespVO;
-import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailsAddsVO;
+import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailsVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ import com.liyuan.wms.common.core.domain.AjaxResult;
 import com.liyuan.wms.common.enums.BusinessType;
 import com.liyuan.wms.wms.domain.WmsReceiptOrderDetail;
 import com.liyuan.wms.wms.service.IWmsReceiptOrderDetailService;
-import com.liyuan.wms.common.utils.poi.ExcelUtil;
 import com.liyuan.wms.common.core.page.TableDataInfo;
 
 /**
@@ -56,10 +54,24 @@ public class WmsReceiptOrderDetailController extends BaseController {
         return success(wmsReceiptOrderDetailService.selectWmsReceiptOrderDetailById(id));
     }
 
+    /**
+     * 批量新增入库单信息
+     * @param vo
+     * @return
+     */
     @PreAuthorize("@ss.hasPermi('wms:inDetail:add')")
     @PostMapping("/adds")
-    public AjaxResult adds(@RequestBody WmsReceiptOrderDetailsAddsVO vo) {
+    public AjaxResult adds(@RequestBody WmsReceiptOrderDetailsVO vo) {
         return toAjax(wmsReceiptOrderDetailService.adds(vo));
+    }
+
+    /**
+     * 批量修改入库单信息
+     */
+    @PreAuthorize("@ss.hasPermi('wms:inDetail:edit')")
+    @PostMapping("/edits")
+    public AjaxResult edits(@RequestBody WmsReceiptOrderDetailsVO vo){
+        return toAjax(wmsReceiptOrderDetailService.edits(vo));
     }
 
     /**
