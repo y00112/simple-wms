@@ -23,6 +23,9 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.getters.roles.length === 0) {
         isRelogin.show = true
+        store.dispatch("wms/getWarehouseList");
+        store.dispatch("wms/getAreaList");
+        store.dispatch("wms/getRackList");
         // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetInfo').then(() => {
           isRelogin.show = false

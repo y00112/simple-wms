@@ -1,7 +1,7 @@
 {
   "name": "ruoyi",
   "version": "3.8.7",
-  "description": "力源轻量级WMS",
+  "description": "物资领用",
   "author": "若依",
   "license": "MIT",
   "scripts": {

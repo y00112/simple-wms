@@ -42,3 +42,10 @@ export function delItem(id) {
     method: 'delete'
   })
 }
+  // 资产数量
+export function getCount() {
+  return request({
+    url: '/wms/item/count',
+    method: 'get'
+  })
+}

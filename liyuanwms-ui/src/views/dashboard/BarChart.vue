@@ -1,41 +1,44 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div class="chart"
+       :style="{height:height,width:width}" />
 </template>
 
 <script>
 import * as echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
-
-const animationDuration = 6000
+import { getCount } from '@/api/wms/item.js'
+require('echarts/theme/macarons') // echarts theme
+// 引入柱状图组件
+require("echarts/lib/chart/bar");
+require("echarts/lib/component/tooltip");
+require("echarts/lib/component/title");
 
 export default {
   mixins: [resize],
   props: {
-    className: {
-      type: String,
-      default: 'chart'
-    },
     width: {
       type: String,
       default: '100%'
     },
     height: {
       type: String,
-      default: '300px'
-    }
+      default: '350px'
+    },
   },
-  data() {
+  data () {
     return {
-      chart: null
+      chart: null,
+      xvalue: [],
+      yvalue: [],
     }
   },
-  mounted() {
+  mounted () {
+    //绘制柱状图
     this.$nextTick(() => {
       this.initChart()
     })
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (!this.chart) {
       return
     }
@@ -43,9 +46,8 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart() {
+    initChart () {
       this.chart = echarts.init(this.$el, 'macarons')
-
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
@@ -53,19 +55,31 @@ export default {
             type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
           }
         },
-        grid: {
-          top: 10,
-          left: '2%',
-          right: '2%',
-          bottom: '3%',
-          containLabel: true
+        //自带title样式和配置
+        // title: {
+        //   text: "每月完成票务数目份数",
+        //   textStyle: {
+        //     //---主标题内容样式
+        //     color: "black",
+        //   },
+        //    left: "center", //居中
+        //   padding: [30, 0],
+        // },
+        // grid: {
+        //   //下面是偏移
+        //   // left: "3%",
+        //   // right: "4%",
+        //   // bottom: "3%",
+        //   containLabel: true,
+        // },
+        toolbox: {
+          show: true,
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          axisTick: {
-            alignWithLabel: true
-          }
+          splitLine: { show: false }, //去除网格线
+          splitArea: { show: false }, //保留网格区域
+          axisTick: { show: false }, //隐藏刻度线
         }],
         yAxis: [{
           type: 'value',
@@ -73,27 +87,36 @@ export default {
             show: false
           }
         }],
+        series: [
+          {
+            barWidth: 40,
+            name: "总份数",
+            type: "bar",
+            label: {
+              // 柱状图上方文本标签，默认展示数值信息
+              show: true,
+              position: "top",
+            },
+          },
+        ]
+      })
+      this.getCount()
+    },
+    async getCount () {
+      this.xvalue = []
+      this.yvalue = []
+      const res = await getCount()
+      res.data.forEach(item => {
+        this.xvalue.push(item.itemTypeName)
+        this.yvalue.push(item.count)
+      });
+
+      this.chart.setOption({
+        xAxis: [{
+          data: this.xvalue,
+        }],
         series: [{
-          name: 'pageA',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [79, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageB',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageC',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
-          animationDuration
+          data: this.yvalue
         }]
       })
     }

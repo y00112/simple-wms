@@ -6,32 +6,32 @@
              :inline="true"
              v-show="showSearch"
              label-width="100px">
-      <el-form-item label="入库状态"
-                    prop="receiptOrderStatus">
-        <el-select v-model="queryParams.receiptOrderStatus"
-                   placeholder="请选择入库状态"
+      <el-form-item label="出库状态"
+                    prop="shipmentOrderStatus">
+        <el-select v-model="queryParams.shipmentOrderStatus"
+                   placeholder="请选择出库状态"
                    clearable>
-          <el-option v-for="dict,index in dict.type.receipt_order_status"
+          <el-option v-for="dict,index in dict.type.shipment_order_status"
                      :key="index"
                      :label="dict.label"
                      :value="dict.value" />
         </el-select>
       </el-form-item>
-      <el-form-item label="入库类型"
-                    prop="receiptOrderType">
-        <el-select v-model="queryParams.receiptOrderType"
-                   placeholder="请选择入库状态"
+      <el-form-item label="出库类型"
+                    prop="shipmentOrderType">
+        <el-select v-model="queryParams.shipmentOrderType"
+                   placeholder="请选择出库状态"
                    clearable>
-          <el-option v-for="dict,index in dict.type.receipt_order_type"
+          <el-option v-for="dict,index in dict.type.shipment_order_type"
                      :key="index"
                      :label="dict.label"
                      :value="dict.value" />
         </el-select>
       </el-form-item>
-      <el-form-item label="入库单号"
-                    prop="receiptOrderNo">
-        <el-input v-model="queryParams.receiptOrderNo"
-                  placeholder="请输入入库单号"
+      <el-form-item label="出库单号"
+                    prop="shipmentOrderNo">
+        <el-input v-model="queryParams.shipmentOrderNo"
+                  placeholder="请输入出库单号"
                   clearable
                   @keyup.enter.native="handleQuery" />
       </el-form-item>
@@ -54,15 +54,14 @@
                    icon="el-icon-plus"
                    size="mini"
                    @click="handleAdd"
-                   v-hasPermi="['wms:inOrder:add']">创建入库单</el-button>
+                   v-hasPermi="['wms:inOrder:add']">创建出库单</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch"
                      @queryTable="getList"></right-toolbar>
     </el-row>
-
     <el-card>
       <div class="title">
-        入库清单
+        出库清单
       </div>
       <el-table v-loading="loading"
                 :data="inOrderList">
@@ -73,26 +72,26 @@
             {{ total - ((queryParams.pageNum-1)*queryParams.pageSize) - scope.$index}}
           </template>
         </el-table-column>
-        <el-table-column label="入库单号"
+        <el-table-column label="出库单号"
                          align="center"
-                         prop="receiptOrderNo" />
-        <el-table-column label="入库人"
+                         prop="shipmentOrderNo" />
+        <el-table-column label="领取人"
                          align="center"
-                         prop="depositor" />
-        <el-table-column label="入库类型"
+                         prop="recipient" />
+        <el-table-column label="出库类型"
                          align="center"
-                         prop="receiptOrderType">
+                         prop="shipmentOrderType">
           <template slot-scope="scope">
-            <dict-tag :options="dict.type.receipt_order_type"
-                      :value="scope.row.receiptOrderType" />
+            <dict-tag :options="dict.type.shipment_order_type"
+                      :value="scope.row.shipmentOrderType" />
           </template>
         </el-table-column>
-        <el-table-column label="入库状态"
+        <el-table-column label="出库状态"
                          align="center"
-                         prop="receiptOrderStatus">
+                         prop="shipmentOrderStatus">
           <template slot-scope="scope">
-            <dict-tag :options="dict.type.receipt_order_status"
-                      :value="scope.row.receiptOrderStatus" />
+            <dict-tag :options="dict.type.shipment_order_status"
+                      :value="scope.row.shipmentOrderStatus" />
           </template>
         </el-table-column>
         <el-table-column label="备注"
@@ -107,7 +106,7 @@
                        type="text"
                        icon="el-icon-setting"
                        @click="handleUpdate(scope.row)"
-                       v-hasPermi="['wms:inOrder:edit']">入库</el-button>
+                       v-hasPermi="['wms:inOrder:edit']">出库</el-button>
             <!-- <el-button size="mini"
                      type="text"
                      icon="el-icon-delete"
@@ -123,16 +122,15 @@
                   :limit.sync="queryParams.pageSize"
                   @pagination="getList" />
     </el-card>
-
   </div>
 </template>
 
 <script>
-import { listInOrder, delInOrder } from "@/api/wms/inorder";
+import { listOutOrder, delOutOrder } from "@/api/wms/outinorder";
 
 export default {
   name: "InOrder",
-  dicts: ['receipt_order_type', 'receipt_order_status'],
+  dicts: ['shipment_order_type', 'shipment_order_status'],
   data () {
     return {
       // 遮罩层
@@ -147,7 +145,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 入库单表格数据
+      // 出库单表格数据
       inOrderList: [],
       // 弹出层标题
       title: "",
@@ -157,10 +155,10 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        receiptOrderNo: null,
-        receiptOrderType: null,
-        receiptOrderStatus: null,
-        depositor: null
+        shipmentOrderNo: null,
+        shipmentOrderType: null,
+        shipmentOrderStatus: null,
+        recipient: null
       },
       // 表单参数
       form: {},
@@ -176,10 +174,10 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询入库单列表 */
+    /** 查询出库单列表 */
     getList () {
       this.loading = true;
-      listInOrder(this.queryParams).then(response => {
+      listOutOrder(this.queryParams).then(response => {
         this.inOrderList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -202,11 +200,11 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd () {
-      this.$router.push('/inAndOut/inedit');
+      this.$router.push('/inAndOut/outedit');
     },
     /** 修改按钮操作 */
     handleUpdate (row) {
-      const pagePath = '/inAndOut/inedit'
+      const pagePath = '/inAndOut/outedit'
       const params = {
         id: row.id
       }
@@ -219,8 +217,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete (row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除入库单编号为"' + ids + '"的数据项？').then(function () {
-        return delInOrder(ids);
+      this.$modal.confirm('是否确认删除出库单编号为"' + ids + '"的数据项？').then(function () {
+        return delOutOrder(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -235,7 +233,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .title {
   border-left: 4px solid;
@@ -245,5 +242,6 @@ export default {
   line-height: 20px;
   padding-left: 10px;
   margin-bottom: 20px;
+  text-align: left;
 }
 </style>

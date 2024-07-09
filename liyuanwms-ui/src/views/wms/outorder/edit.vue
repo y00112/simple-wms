@@ -1,38 +1,38 @@
 <template>
   <div class="app-container">
-    <div class="receipt-order-content">
+    <div class="shipment-order-content">
       <el-form ref="form"
                :model="form"
                :rules="rules"
                label-width="100px">
-        <el-form-item label="入库单号"
-                      prop="receiptOrderNo">
-          <div v-if="form.id">{{form.receiptOrderNo}}</div>
-          <el-input v-model="form.receiptOrderNo"
-                    placeholder="请输入入库单号"
+        <el-form-item label="出库单号"
+                      prop="shipmentOrderNo">
+          <div v-if="form.id">{{form.shipmentOrderNo}}</div>
+          <el-input v-model="form.shipmentOrderNo"
+                    placeholder="请输入出库单号"
                     style="width: 200px;"
                     disabled
                     v-else />
         </el-form-item>
-        <el-form-item label="入库类型"
-                      prop="receiptOrderType">
+        <el-form-item label="出库类型"
+                      prop="shipmentOrderType">
           <div v-if="form.id">
-            <div v-for="dict in dict.type.receipt_order_type"
+            <div v-for="dict in dict.type.shipment_order_type"
                  :key="dict.value"
-                 v-if="dict.value == form.receiptOrderType">{{dict.label}}</div>
+                 v-if="dict.value == form.shipmentOrderType">{{dict.label}}</div>
           </div>
-          <el-radio-group v-model="form.receiptOrderType"
+          <el-radio-group v-model="form.shipmentOrderType"
                           v-else>
-            <el-radio-button v-for="dict in dict.type.receipt_order_type"
+            <el-radio-button v-for="dict in dict.type.shipment_order_type"
                              :key="dict.value"
                              :label="dict.value">{{dict.label}}</el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="入库人"
-                      prop="depositor">
-          <div v-if="form.id">{{form.depositor}}</div>
-          <el-input v-model="form.depositor"
-                    placeholder="请输入入库人"
+        <el-form-item label="领取人"
+                      prop="recipient">
+          <div v-if="form.id">{{form.recipient}}</div>
+          <el-input v-model="form.recipient"
+                    placeholder="请输入领取人"
                     style="width: 200px;"
                     v-else />
         </el-form-item>
@@ -56,13 +56,6 @@
           <span style="margin-right: 10px;font-weight: 600;">
             物料明细
           </span>
-          <!-- <el-button type="success"
-                     plain
-                     icon="el-icon-setting"
-                     size="small"
-                     @click="onBatchSetInventory"
-                     v-if="!form.id">批量设置仓库/库区</el-button> -->
-
         </el-col>
         <el-col :span="2.5">
           <el-button type="primary"
@@ -78,7 +71,7 @@
                label-width="108px"
                :inline="true">
         <el-table v-loading="loading"
-                  :data="formData.inOrderList"
+                  :data="formData.outOrderList"
                   @selection-change="handleSelectionChange"
                   style="margin-top: 20px;">
           <el-table-column type="selection"
@@ -98,48 +91,32 @@
                            align="center"
                            prop="place">
             <template slot-scope="scope">
-              <GetSpace v-model="scope.row.place"
-                        v-if="scope.row.place" />
+              <GetSpace v-model="scope.row.place" />
             </template>
           </el-table-column>
-          <el-table-column label="入库数量"
+          <el-table-column label="出库数量"
                            align="center"
-                           prop="inQuantity">
+                           prop="shipmentQuantity">
             <template slot-scope="scope">
-              <el-form-item :prop="'inOrderList.' + scope.$index + '.inQuantity'"
-                            :rules="formRules.inQuantity"
+              <el-form-item :prop="'outOrderList.' + scope.$index + '.shipmentQuantity'"
+                            :rules="formRules.shipmentQuantity"
                             v-if="!form.id">
-                <el-input-number v-model="scope.row.inQuantity"
+                <el-input-number v-model="scope.row.shipmentQuantity"
                                  :min="1"
                                  size="small"></el-input-number>
               </el-form-item>
-              <div v-if="form.id">{{scope.row.inQuantity}}</div>
+              <div v-if="form.id">{{scope.row.shipmentQuantity}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="入库状态"
+          <el-table-column label="出库状态"
                            align="center"
-                           prop="receiptOrderStatus"
+                           prop="shipmentOrderStatus"
                            v-if="form.id">
             <template slot-scope="scope">
-              <dict-tag :options="dict.type.receipt_order_status"
-                        :value="scope.row.receiptOrderStatus" />
+              <dict-tag :options="dict.type.shipment_order_status"
+                        :value="scope.row.shipmentOrderStatus" />
             </template>
           </el-table-column>
-          <!-- <el-table-column label="金额"
-                           align="center"
-                           prop="money">
-            <template slot-scope="scope">
-              <el-form-item :prop="'inOrderList.' + scope.$index + '.money'"
-                            :rules="formRules.money"
-                            v-if="!form.id">
-                <el-input-number v-model="scope.row.money"
-                                 :min="0.01"
-                                 :precision="2"
-                                 size="small"></el-input-number>
-              </el-form-item>
-              <div v-if="form.id">{{scope.row.money}}</div>
-            </template>
-          </el-table-column> -->
           <el-table-column label="操作"
                            align="center"
                            class-name="small-padding fixed-width">
@@ -152,8 +129,8 @@
               <el-button size="mini"
                          type="text"
                          icon="el-icon-setting"
-                         v-if="form.id && scope.row.receiptOrderStatus == 1"
-                         @click="handleStatusChange(scope.row)">入库</el-button>
+                         v-if="form.id && scope.row.shipmentOrderStatus == 1"
+                         @click="handleStatusChange(scope.row)">出库</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -178,7 +155,7 @@
                    icon="el-icon-setting"
                    size="small"
                    v-if="form.id"
-                   @click="handleStatusChangeAll">批量入库</el-button>
+                   @click="handleStatusChangeAll">批量出库</el-button>
       </div>
     </div>
     <el-dialog title="添加物料"
@@ -217,29 +194,22 @@
 
       </div>
     </el-dialog>
-
-    <BatchWarehouseDialog :visible.sync="batchDialogVisible"
-                          :form-data.sync="batchForm"
-                          @confirmed="onBatchDialogFinished"
-                          v-if="batchDialogVisible"></BatchWarehouseDialog>
   </div>
 </template>
 <script>
 import { listItem } from "@/api/wms/item";
 import { randomId } from '@/utils/RandomUtils'
-import { getInOrder, addInOrder, updateInOrder } from "@/api/wms/inorder";
-import { listInDetail, addsInDetail, updateInDetail, changeStatus } from "@/api/wms/indetail";
-import BatchWarehouseDialog from "@/views/wms/components/BatchWarehouseDialog/index.vue";
+import { getOutOrder, addOutOrder, updateOutOrder } from "@/api/wms/outinorder";
+import { listOutDetail, addsOutDetail, updateOutDetail, changeStatus } from "@/api/wms/outdetail";
 import WmsWarehouseCascader from '../components/WmsWarehouseCascader/index.vue'
 import GetSpace from '../components/GetSpace/index.vue'
 export default {
-  name: "WmsReceiptOrderEdit",
-  dicts: ['receipt_order_type', 'receipt_order_status'],
+  name: "WmsshipmentOrderEdit",
+  dicts: ['shipment_order_type', 'shipment_order_status'],
   components: {
-    BatchWarehouseDialog,
     WmsWarehouseCascader,
     GetSpace
-  },
+  }, 
   data () {
     return {
       // 遮罩层
@@ -262,14 +232,14 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        receiptOrderNo: [
-          { required: true, message: "入库单号不能为空", trigger: "blur" }
+        shipmentOrderNo: [
+          { required: true, message: "出库单号不能为空", trigger: "blur" }
         ],
-        receiptOrderType: [
-          { required: true, message: "入库类型不能为空", trigger: "blur" }
+        shipmentOrderType: [
+          { required: true, message: "出库类型不能为空", trigger: "blur" }
         ],
-        depositor: [
-          { required: true, message: "入库人不能为空", trigger: "blur" }
+        recipient: [
+          { required: true, message: "领取人不能为空", trigger: "blur" }
         ],
       },
       materialsOpen: false,
@@ -281,13 +251,13 @@ export default {
         pageSize: 10,
       },
       formData: {
-        inOrderList: []
+        outOrderList: []
       },
       formRules: {
-        receiptOrderNo: [
-          { required: true, message: "入库单号不能为空", trigger: "blur" }
+        shipmentOrderNo: [
+          { required: true, message: "出库单号不能为空", trigger: "blur" }
         ],
-        inQuantity: [
+        shipmentQuantity: [
           { required: true, message: "数量不能为空", trigger: "blur" }
         ],
         place: [
@@ -298,8 +268,6 @@ export default {
         ],
       },
       selectMaterialsList: [],
-
-      batchDialogVisible: false,
       batchForm: {
         place: []
       },
@@ -316,17 +284,17 @@ export default {
       this.loading = false
       let id = this.form.id || (this.$route.query && this.$route.query.id);
       if (id) {
-        const res = await getInOrder(id)
+        const res = await getOutOrder(id)
         this.form = res.data
-        this.getinOrderList()
+        this.getOutOrderList()
       }
     },
-    async getinOrderList () {
+    async getOutOrderList () {
       const query = {
-        receiptOrderNo: this.form.receiptOrderNo,
+        shipmentOrderNo: this.form.shipmentOrderNo,
       }
-      const list = await listInDetail(query)
-      this.formData.inOrderList = list.rows
+      const list = await listOutDetail(query)
+      this.formData.outOrderList = list.rows
     },
     /** 查询物料列表 */
     addMaterials () {
@@ -341,47 +309,19 @@ export default {
         this.materialsloading = false;
       });
     },
-    /** 批量设置仓库/库区 */
-    onBatchSetInventory () {
-      const { inOrderList } = this.formData
-      if (!inOrderList || inOrderList.length === 0) {
-        this.$modal.msgError('请先添加物料')
-        return
-      }
-      // 未选中
-      if (!this.ids.length) {
-        this.$modal.msgError('请先选择物料')
-        return
-      }
-      this.batchDialogVisible = true
-    },
-    onBatchDialogFinished () {
-      this.batchDialogVisible = false
-      const [warehouseId, areaId, rackId] = this.batchForm.place || []
-      this.formData.inOrderList.forEach(it => {
-        // 仅更新已选中
-        if (this.ids.includes(it.id)) {
-          // it.place = [warehouseId, areaId, rackId].filter(Boolean)   
-          this.$set(it, 'place', [warehouseId, areaId, rackId].filter(Boolean))
-          this.$set(it, 'warehouseId', warehouseId)
-          this.$set(it, 'areaId', areaId)
-          this.$set(it, 'rackId', rackId)
-        }
-      })
-    },
     selectionMaterials (val) {
       this.selectMaterialsList = val.map(item => ({
-        receiptOrderNo: this.form.receiptOrderNo,
+        shipmentOrderNo: this.form.shipmentOrderNo,
         itemId: item.id,
         itemName: item.itemName,
         itemNo: item.itemNo,
         quantity: item.quantity,
         place: item.place,
-        receiptOrderStatus: 1
+        shipmentOrderStatus: 1,
       }))
     },
     submitList () {
-      this.formData.inOrderList = this.selectMaterialsList;
+      this.formData.outOrderList = this.selectMaterialsList;
       this.materialsOpen = false;
     },
     // 多选框选中数据
@@ -394,12 +334,12 @@ export default {
     reset () {
       this.form = {
         id: null,
-        receiptOrderNo: 'R-' + randomId(),
-        receiptOrderType: 1,
-        receiptOrderStatus: 1,
+        shipmentOrderNo: 'R-' + randomId(),
+        shipmentOrderType: 1,
+        shipmentOrderStatus: 1,
         remark: null,
         delFlag: null,
-        depositor: null,
+        recipient: null,
         createTime: null,
         updateBy: null,
         updateTime: null,
@@ -410,57 +350,57 @@ export default {
     /** 提交按钮 */
     async submitForm () {
       await this.$refs["form"].validate()
-      const { inOrderList } = this.formData
-      if (!inOrderList || inOrderList.length === 0) {
+      const { outOrderList } = this.formData
+      if (!outOrderList || outOrderList.length === 0) {
         this.$modal.msgError('请先添加物料')
         return
       }
       await this.$refs["formRef"].validate()
 
       if (this.form.id) {
-        await updateInOrder(this.form)
-        await updateInDetail({ list: this.formData.inOrderList })
+        await updateOutOrder(this.form)
+        await updateOutDetail({ list: this.formData.outOrderList })
         this.$modal.msgSuccess("修改成功");
-        this.$router.push('/inAndOut/inorder');
+        this.$router.push('/inAndOut/outorder');
         return
       }
-      await addInOrder(this.form)
-      await addsInDetail({ list: this.formData.inOrderList })
+      await addOutOrder(this.form)
+      await addsOutDetail({ list: this.formData.outOrderList })
       this.$modal.msgSuccess("添加成功");
-      this.$router.push('/inAndOut/inorder');
+      this.cancel()
     },
     cancel () {
-      this.$router.push('/inAndOut/inorder');
+      this.$router.push('/inAndOut/outorder');
     },
     // 删除物料
     handleDelete (row) {
-      let index = this.formData.inOrderList.indexOf(row);
+      let index = this.formData.outOrderList.indexOf(row);
       if (index !== -1) {
-        this.formData.inOrderList.splice(index, 1)
+        this.formData.outOrderList.splice(index, 1)
       }
     },
-    // 单个入库 状态修改
+    // 单个出库 状态修改
     async handleStatusChange (row) {
       try {
         await changeStatus({ list: [row] })
-        this.$modal.msgSuccess("入库成功");
-        this.getinOrderList()
+        this.$modal.msgSuccess("出库成功");
+        this.getOutOrderList()
       } catch { }
     },
     isRow (row) {
-      return !(row.receiptOrderStatus == 2)
+      return !(row.shipmentOrderStatus == 2)
     },
-    // 批量入库
+    // 批量出库
     async handleStatusChangeAll () {
       // 未选中
       if (!this.ids.length) {
-        this.$modal.msgError('请先选择入库的物料')
+        this.$modal.msgError('请先选择出库的物料')
         return
       }
       try {
         await changeStatus({ list: this.changeStatusList })
-        this.$modal.msgSuccess("入库成功");
-        this.getinOrderList()
+        this.$modal.msgSuccess("出库成功");
+        this.getOutOrderList()
       } catch { }
 
     },
@@ -471,7 +411,7 @@ export default {
 </script>
 
 <style scoped>
-.receipt-order-content {
+.shipment-order-content {
   width: 70%;
   min-width: 900px;
   margin: 0 auto;

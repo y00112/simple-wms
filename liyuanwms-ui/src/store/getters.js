@@ -15,5 +15,13 @@ const getters = {
   topbarRouters:state => state.permission.topbarRouters,
   defaultRoutes:state => state.permission.defaultRoutes,
   sidebarRouters:state => state.permission.sidebarRouters,
+
+  // wms相关
+  warehouseList: state => state.wms.warehouseList,
+  warehouseMap: state => state.wms.warehouseMap,
+  areaList: state => state.wms.areaList,
+  areaMap: state => state.wms.areaMap,
+  rackList: state => state.wms.rackList,
+  rackMap: state => state.wms.rackMap
 }
 export default getters

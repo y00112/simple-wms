@@ -1,33 +1,47 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger id="hamburger-container"
+               :is-active="sidebar.opened"
+               class="hamburger-container"
+               @toggleClick="toggleSideBar" />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
-    <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
+    <breadcrumb id="breadcrumb-container"
+                class="breadcrumb-container"
+                v-if="!topNav" />
+    <top-nav id="topmenu-container"
+             class="topmenu-container"
+             v-if="topNav" />
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
+        <search id="header-search"
+                class="right-menu-item" />
 
-        <el-tooltip content="源码地址" effect="dark" placement="bottom">
+        <!-- <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
         </el-tooltip>
 
         <el-tooltip content="文档地址" effect="dark" placement="bottom">
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        </el-tooltip> -->
 
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+        <screenfull id="screenfull"
+                    class="right-menu-item hover-effect" />
 
-        <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        <!-- <el-tooltip content="布局大小"
+                    effect="dark"
+                    placement="bottom">
+          <size-select id="size-select"
+                       class="right-menu-item hover-effect" />
+        </el-tooltip> -->
 
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <el-dropdown class="avatar-container right-menu-item hover-effect"
+                   trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar">
+          <img :src="avatar"
+               class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -37,7 +51,8 @@
           <el-dropdown-item @click.native="setting = true">
             <span>布局设置</span>
           </el-dropdown-item>
-          <el-dropdown-item divided @click.native="logout">
+          <el-dropdown-item divided
+                            @click.native="logout">
             <span>退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -75,10 +90,10 @@ export default {
       'device'
     ]),
     setting: {
-      get() {
+      get () {
         return this.$store.state.settings.showSettings
       },
-      set(val) {
+      set (val) {
         this.$store.dispatch('settings/changeSetting', {
           key: 'showSettings',
           value: val
@@ -86,16 +101,16 @@ export default {
       }
     },
     topNav: {
-      get() {
+      get () {
         return this.$store.state.settings.topNav
       }
     }
   },
   methods: {
-    toggleSideBar() {
+    toggleSideBar () {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
+    async logout () {
       this.$confirm('确定注销并退出系统吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -104,7 +119,7 @@ export default {
         this.$store.dispatch('LogOut').then(() => {
           location.href = '/index';
         })
-      }).catch(() => {});
+      }).catch(() => { });
     }
   }
 }
@@ -116,18 +131,18 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   .hamburger-container {
     line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 
@@ -164,10 +179,10 @@ export default {
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
       }
     }

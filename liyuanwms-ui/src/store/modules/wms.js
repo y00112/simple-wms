@@ -2,12 +2,6 @@ import { listWarehouse } from "@/api/wms/warehouse";
 import { listArea } from "@/api/wms/area";
 import { listRack } from "@/api/wms/rack";
 const state = {
-  supplierList: [],
-  customerList: [],
-  carrierList: [],
-  carrierMap: new Map(),
-  customerMap: new Map(),
-  supplierMap: new Map(),
   warehouseList: [],
   warehouseMap: new Map(),
   areaList:[],
@@ -42,21 +36,21 @@ const actions = {
   getWarehouseList({ commit }) {
     return listWarehouse({}, { page: 0, size: 1000 })
       .then(res => {
-        const { content } =res
+        const content =res.rows
         commit('SET_WAREHOUSE', content);
       })
   },
   getAreaList({ commit }) {
     return listArea({}, { page: 0, size: 1000 })
       .then(res => {
-        const { content } =res
+        const content =res.rows
         commit('SET_AREA', content);
       })
   },
   getRackList({ commit }) {
     return listRack({}, { page: 0, size: 1000 })
       .then(res => {
-        const { content } =res
+        const content = res.rows
         commit('SET_RACK', content);
       })
   },
