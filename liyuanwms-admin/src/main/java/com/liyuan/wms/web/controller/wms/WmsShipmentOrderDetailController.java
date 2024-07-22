@@ -1,10 +1,10 @@
-package com.liyuan.wms.wms.controller;
+package com.liyuan.wms.web.controller.wms;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
-import com.liyuan.wms.wms.controller.vo.WmsShipmentDetailsRespVO;
-import com.liyuan.wms.wms.controller.vo.WmsShipmentOrderDetailsVO;
+import com.liyuan.wms.wms.vo.WmsShipmentDetailsRespVO;
+import com.liyuan.wms.wms.vo.WmsShipmentOrderDetailsVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +40,7 @@ public class WmsShipmentOrderDetailController extends BaseController
     /**
      * 查询出库单详情
      */
-    @PreAuthorize("@ss.hasPermi('wms:shipmentDetail:list')")
+    @PreAuthorize("@ss.hasPermi('wms:outDetail:list')")
     @GetMapping("/list")
     public TableDataInfo list(WmsShipmentOrderDetail wmsShipmentOrderDetail)
     {
@@ -52,7 +52,7 @@ public class WmsShipmentOrderDetailController extends BaseController
     /**
      * 批量创建出库单
      */
-    @PreAuthorize("@ss.hasPermi('wms:shipmentDetail:add')")
+    @PreAuthorize("@ss.hasPermi('wms:outDetail:add')")
     @PostMapping("/adds")
     public AjaxResult adds(@RequestBody WmsShipmentOrderDetailsVO vo){
         return toAjax(wmsShipmentOrderDetailService.adds(vo));
@@ -61,7 +61,7 @@ public class WmsShipmentOrderDetailController extends BaseController
     /**
      * 批量修改出库单详情
      */
-    @PreAuthorize("@ss.hasPermi('wms:shipmentDetail:edit')")
+    @PreAuthorize("@ss.hasPermi('wms:outDetail:edit')")
     @PostMapping("/edits")
     public AjaxResult edits(@RequestBody WmsShipmentOrderDetailsVO vo){
         return toAjax(wmsShipmentOrderDetailService.edits(vo));
@@ -70,7 +70,7 @@ public class WmsShipmentOrderDetailController extends BaseController
     // /**
     //  * 查询出库单详情列表
     //  */
-    // @PreAuthorize("@ss.hasPermi('wms:shipmentDetail:list')")
+    // @PreAuthorize("@ss.hasPermi('wms:outDetail:list')")
     // @GetMapping("/list")
     // public TableDataInfo list(WmsShipmentOrderDetail wmsShipmentOrderDetail)
     // {
@@ -82,7 +82,7 @@ public class WmsShipmentOrderDetailController extends BaseController
     /**
      * 导出出库单详情列表
      */
-    @PreAuthorize("@ss.hasPermi('wms:shipmentDetail:export')")
+    @PreAuthorize("@ss.hasPermi('wms:outDetail:export')")
     @Log(title = "出库单详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, WmsShipmentOrderDetail wmsShipmentOrderDetail)
@@ -95,7 +95,7 @@ public class WmsShipmentOrderDetailController extends BaseController
     /**
      * 获取出库单详情详细信息
      */
-    @PreAuthorize("@ss.hasPermi('wms:shipmentDetail:query')")
+    @PreAuthorize("@ss.hasPermi('wms:outDetail:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -105,7 +105,7 @@ public class WmsShipmentOrderDetailController extends BaseController
     /**
      * 新增出库单详情
      */
-    @PreAuthorize("@ss.hasPermi('wms:shipmentDetail:add')")
+    @PreAuthorize("@ss.hasPermi('wms:outDetail:add')")
     @Log(title = "出库单详情", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody WmsShipmentOrderDetail wmsShipmentOrderDetail)
@@ -116,7 +116,7 @@ public class WmsShipmentOrderDetailController extends BaseController
     /**
      * 修改出库单详情
      */
-    @PreAuthorize("@ss.hasPermi('wms:shipmentDetail:edit')")
+    @PreAuthorize("@ss.hasPermi('wms:outDetail:edit')")
     @Log(title = "出库单详情", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody WmsShipmentOrderDetail wmsShipmentOrderDetail)
@@ -127,7 +127,7 @@ public class WmsShipmentOrderDetailController extends BaseController
     /**
      * 删除出库单详情
      */
-    @PreAuthorize("@ss.hasPermi('wms:shipmentDetail:remove')")
+    @PreAuthorize("@ss.hasPermi('wms:outDetail:remove')")
     @Log(title = "出库单详情", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

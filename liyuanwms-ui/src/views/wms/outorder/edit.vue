@@ -7,45 +7,56 @@
                label-width="100px">
         <el-form-item label="出库单号"
                       prop="shipmentOrderNo">
-          <div v-if="form.id">{{form.shipmentOrderNo}}</div>
+          <div v-if="form.id">{{ form.shipmentOrderNo }}</div>
           <el-input v-model="form.shipmentOrderNo"
                     placeholder="请输入出库单号"
                     style="width: 200px;"
                     disabled
-                    v-else />
+                    v-else/>
         </el-form-item>
         <el-form-item label="出库类型"
                       prop="shipmentOrderType">
           <div v-if="form.id">
             <div v-for="dict in dict.type.shipment_order_type"
                  :key="dict.value"
-                 v-if="dict.value == form.shipmentOrderType">{{dict.label}}</div>
+                 v-if="dict.value == form.shipmentOrderType">{{ dict.label }}
+            </div>
           </div>
           <el-radio-group v-model="form.shipmentOrderType"
                           v-else>
             <el-radio-button v-for="dict in dict.type.shipment_order_type"
                              :key="dict.value"
-                             :label="dict.value">{{dict.label}}</el-radio-button>
+                             :label="dict.value">{{ dict.label }}
+            </el-radio-button>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="领取部门"
+                      prop="deptId">
+          <div v-if="form.id">{{ form.deptName }}</div>
+          <treeselect v-else v-model="form.deptId"
+                      :options="deptOptions"
+                      :show-count="true"
+                      placeholder="请选择归属部门"
+                      style="width: 200px;"/>
         </el-form-item>
         <el-form-item label="领取人"
                       prop="recipient">
-          <div v-if="form.id">{{form.recipient}}</div>
+          <div v-if="form.id">{{ form.recipient }}</div>
           <el-input v-model="form.recipient"
                     placeholder="请输入领取人"
                     style="width: 200px;"
-                    v-else />
+                    v-else/>
         </el-form-item>
         <el-form-item label="备注"
                       prop="remark">
-          <div v-if="form.id">{{form.remark ? form.remark : '无'}}</div>
+          <div v-if="form.id">{{ form.remark ? form.remark : '无' }}</div>
           <el-input v-model="form.remark"
                     placeholder="请输入备注"
                     type="textarea"
                     :rows="3"
                     maxlength="100"
                     show-word-limit
-                    v-else />
+                    v-else/>
         </el-form-item>
       </el-form>
       <el-divider></el-divider>
@@ -62,7 +73,8 @@
                      plain
                      size="small"
                      @click="addMaterials"
-                     v-if="!form.id">添加物料</el-button>
+                     v-if="!form.id">添加物料
+          </el-button>
         </el-col>
       </el-row>
       <el-form :model="formData"
@@ -77,21 +89,24 @@
           <el-table-column type="selection"
                            width="55"
                            align="center"
-                           :selectable="isRow" />
+                           :selectable="isRow"/>
           <el-table-column label="物料名"
                            align="center"
-                           prop="itemName" />
+                           prop="itemName"/>
           <el-table-column label="物料编号"
                            align="center"
-                           prop="itemNo" />
+                           prop="itemNo"/>
           <el-table-column label="库存数量"
                            align="center"
-                           prop="quantity" />
+                           prop="quantity"/>
+          <el-table-column label="单位"
+                           align="center"
+                           prop="unit"/>
           <el-table-column label="仓库/库区"
                            align="center"
                            prop="place">
             <template slot-scope="scope">
-              <GetSpace v-model="scope.row.place" />
+              <GetSpace v-model="scope.row.place"/>
             </template>
           </el-table-column>
           <el-table-column label="出库数量"
@@ -105,7 +120,7 @@
                                  :min="1"
                                  size="small"></el-input-number>
               </el-form-item>
-              <div v-if="form.id">{{scope.row.shipmentQuantity}}</div>
+              <div v-if="form.id">{{ scope.row.shipmentQuantity }}</div>
             </template>
           </el-table-column>
           <el-table-column label="出库状态"
@@ -114,7 +129,7 @@
                            v-if="form.id">
             <template slot-scope="scope">
               <dict-tag :options="dict.type.shipment_order_status"
-                        :value="scope.row.shipmentOrderStatus" />
+                        :value="scope.row.shipmentOrderStatus"/>
             </template>
           </el-table-column>
           <el-table-column label="操作"
@@ -125,12 +140,14 @@
                          type="text"
                          icon="el-icon-delete"
                          @click="handleDelete(scope.row)"
-                         v-if="!form.id">删除</el-button>
+                         v-if="!form.id">删除
+              </el-button>
               <el-button size="mini"
                          type="text"
                          icon="el-icon-setting"
                          v-if="form.id && scope.row.shipmentOrderStatus == 1"
-                         @click="handleStatusChange(scope.row)">出库</el-button>
+                         @click="handleStatusChange(scope.row)">出库
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -140,22 +157,26 @@
         <el-button type="primary"
                    plain
                    size="small"
-                   @click="addMaterials">添加物料</el-button>
+                   @click="addMaterials">添加物料
+        </el-button>
       </div>
 
       <div class="flex-center">
         <el-button @click="cancel"
-                   size="small">取 消</el-button>
+                   size="small">关 闭
+        </el-button>
         <el-button type="primary"
                    @click="submitForm"
                    size="small"
-                   v-if="!form.id">保 存</el-button>
+                   v-if="!form.id">保 存
+        </el-button>
         <el-button type="success"
                    plain
                    icon="el-icon-setting"
                    size="small"
                    v-if="form.id"
-                   @click="handleStatusChangeAll">批量出库</el-button>
+                   @click="handleStatusChangeAll">批量出库
+        </el-button>
       </div>
     </div>
     <el-dialog title="添加物料"
@@ -168,49 +189,59 @@
                 border>
         <el-table-column type="selection"
                          width="55"
-                         align="center" />
+                         align="center"/>
         <el-table-column label="物料名称"
                          align="center"
-                         prop="itemName" />
+                         prop="itemName"/>
         <el-table-column label="物料编号"
                          align="center"
-                         prop="itemNo" />
+                         prop="itemNo"/>
         <el-table-column label="库存数量"
                          align="center"
-                         prop="quantity" />
+                         prop="quantity"/>
+        <el-table-column label="单位"
+                         align="center"
+                         prop="unit"/>
       </el-table>
       <pagination v-show="materialsTotal>0"
                   :total="materialsTotal"
                   :page.sync="materialsParams.pageNum"
                   :limit.sync="materialsParams.pageSize"
-                  @pagination="addMaterials" />
+                  @pagination="addMaterials"/>
       <div slot="footer"
            class="dialog-footer">
         <el-button @click="materialsOpen = false"
-                   size="small">取 消</el-button>
+                   size="small">关 闭
+        </el-button>
         <el-button type="primary"
                    @click="submitList"
-                   size="small">确 定</el-button>
+                   size="small">确 定
+        </el-button>
 
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import { listItem } from "@/api/wms/item";
-import { randomId } from '@/utils/RandomUtils'
-import { getOutOrder, addOutOrder, updateOutOrder } from "@/api/wms/outinorder";
-import { listOutDetail, addsOutDetail, updateOutDetail, changeStatus } from "@/api/wms/outdetail";
+import {listItem} from "@/api/wms/item";
+import {randomId} from '@/utils/RandomUtils'
+import {getOutOrder, addOutOrder, updateOutOrder} from "@/api/wms/outinorder";
+import {listOutDetail, addsOutDetail, updateOutDetail, changeStatus} from "@/api/wms/outdetail";
 import WmsWarehouseCascader from '../components/WmsWarehouseCascader/index.vue'
 import GetSpace from '../components/GetSpace/index.vue'
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import {deptTreeSelect} from "@/api/system/user";
+
 export default {
   name: "WmsshipmentOrderEdit",
   dicts: ['shipment_order_type', 'shipment_order_status'],
   components: {
+    Treeselect,
     WmsWarehouseCascader,
     GetSpace
-  }, 
-  data () {
+  },
+  data() {
     return {
       // 遮罩层
       loading: true,
@@ -230,16 +261,21 @@ export default {
       open: false,
       // 表单参数
       form: {},
+      // 部门树选项
+      deptOptions: undefined,
       // 表单校验
       rules: {
         shipmentOrderNo: [
-          { required: true, message: "出库单号不能为空", trigger: "blur" }
+          {required: true, message: "出库单号不能为空", trigger: "blur"}
         ],
         shipmentOrderType: [
-          { required: true, message: "出库类型不能为空", trigger: "blur" }
+          {required: true, message: "出库类型不能为空", trigger: "blur"}
         ],
         recipient: [
-          { required: true, message: "领取人不能为空", trigger: "blur" }
+          {required: true, message: "领取人不能为空", trigger: "blur"}
+        ],
+        deptId:[
+          {required: true, message: "领取部门不能为空", trigger: "blur"}
         ],
       },
       materialsOpen: false,
@@ -255,16 +291,16 @@ export default {
       },
       formRules: {
         shipmentOrderNo: [
-          { required: true, message: "出库单号不能为空", trigger: "blur" }
+          {required: true, message: "出库单号不能为空", trigger: "blur"}
         ],
         shipmentQuantity: [
-          { required: true, message: "数量不能为空", trigger: "blur" }
+          {required: true, message: "数量不能为空", trigger: "blur"}
         ],
         place: [
-          { required: true, message: "仓库不能为空", trigger: "change" }
+          {required: true, message: "仓库不能为空", trigger: "change"}
         ],
         money: [
-          { required: true, message: "金额不能为空", trigger: "blur" }
+          {required: true, message: "金额不能为空", trigger: "blur"}
         ],
       },
       selectMaterialsList: [],
@@ -274,12 +310,14 @@ export default {
       changeStatusList: []
     };
   },
-  created () {
-    this.initForm()
+  created() {
+    this.initForm();
+    this.getDeptTree();
+
   },
   methods: {
     /** 初始化表单 */
-    async initForm () {
+    async initForm() {
       this.reset()
       this.loading = false
       let id = this.form.id || (this.$route.query && this.$route.query.id);
@@ -289,7 +327,7 @@ export default {
         this.getOutOrderList()
       }
     },
-    async getOutOrderList () {
+    async getOutOrderList() {
       const query = {
         shipmentOrderNo: this.form.shipmentOrderNo,
       }
@@ -297,7 +335,7 @@ export default {
       this.formData.outOrderList = list.rows
     },
     /** 查询物料列表 */
-    addMaterials () {
+    addMaterials() {
       this.materialsOpen = true
       this.materialsloading = true
       const query = {
@@ -309,7 +347,7 @@ export default {
         this.materialsloading = false;
       });
     },
-    selectionMaterials (val) {
+    selectionMaterials(val) {
       this.selectMaterialsList = val.map(item => ({
         shipmentOrderNo: this.form.shipmentOrderNo,
         itemId: item.id,
@@ -317,21 +355,22 @@ export default {
         itemNo: item.itemNo,
         quantity: item.quantity,
         place: item.place,
+        unit: item.unit,
         shipmentOrderStatus: 1,
       }))
     },
-    submitList () {
+    submitList() {
       this.formData.outOrderList = this.selectMaterialsList;
       this.materialsOpen = false;
     },
     // 多选框选中数据
-    handleSelectionChange (selection) {
+    handleSelectionChange(selection) {
       this.changeStatusList = selection
       this.ids = selection.map(item => item.id)
       this.multiple = !selection.length
     },
     // 表单重置
-    reset () {
+    reset() {
       this.form = {
         id: null,
         shipmentOrderNo: 'R-' + randomId(),
@@ -348,9 +387,9 @@ export default {
       this.resetForm("form");
     },
     /** 提交按钮 */
-    async submitForm () {
+    async submitForm() {
       await this.$refs["form"].validate()
-      const { outOrderList } = this.formData
+      const {outOrderList} = this.formData
       if (!outOrderList || outOrderList.length === 0) {
         this.$modal.msgError('请先添加物料')
         return
@@ -359,49 +398,57 @@ export default {
 
       if (this.form.id) {
         await updateOutOrder(this.form)
-        await updateOutDetail({ list: this.formData.outOrderList })
+        await updateOutDetail({list: this.formData.outOrderList})
         this.$modal.msgSuccess("修改成功");
         this.$router.push('/inAndOut/outorder');
         return
       }
       await addOutOrder(this.form)
-      await addsOutDetail({ list: this.formData.outOrderList })
+      await addsOutDetail({list: this.formData.outOrderList})
       this.$modal.msgSuccess("添加成功");
       this.cancel()
     },
-    cancel () {
+    cancel() {
       this.$router.push('/inAndOut/outorder');
     },
     // 删除物料
-    handleDelete (row) {
+    handleDelete(row) {
       let index = this.formData.outOrderList.indexOf(row);
       if (index !== -1) {
         this.formData.outOrderList.splice(index, 1)
       }
     },
     // 单个出库 状态修改
-    async handleStatusChange (row) {
+    async handleStatusChange(row) {
       try {
-        await changeStatus({ list: [row] })
+        await changeStatus({list: [row]})
         this.$modal.msgSuccess("出库成功");
         this.getOutOrderList()
-      } catch { }
+      } catch {
+      }
     },
-    isRow (row) {
+    isRow(row) {
       return !(row.shipmentOrderStatus == 2)
     },
+    /** 查询部门下拉树结构 */
+    getDeptTree() {
+      deptTreeSelect().then(response => {
+        this.deptOptions = response.data;
+      });
+    },
     // 批量出库
-    async handleStatusChangeAll () {
+    async handleStatusChangeAll() {
       // 未选中
       if (!this.ids.length) {
         this.$modal.msgError('请先选择出库的物料')
         return
       }
       try {
-        await changeStatus({ list: this.changeStatusList })
+        await changeStatus({list: this.changeStatusList})
         this.$modal.msgSuccess("出库成功");
         this.getOutOrderList()
-      } catch { }
+      } catch {
+      }
 
     },
   }
@@ -416,6 +463,7 @@ export default {
   min-width: 900px;
   margin: 0 auto;
 }
+
 .flex-center {
   display: flex;
   justify-content: center;

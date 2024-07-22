@@ -7,120 +7,141 @@ import com.liyuan.wms.common.core.domain.BaseEntity;
 
 /**
  * 出库单对象 wms_shipment_order
- * 
+ *
  * @author zhaoyss
  * @date 2024-06-24
  */
-public class WmsShipmentOrder extends BaseEntity
-{
+public class WmsShipmentOrder extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    /** id */
+    /**
+     * id
+     */
     private Long id;
 
-    /** 出库单号，系统自动生成 */
+    /**
+     * 部门id
+     */
+    @Excel(name = "部门id")
+    private Long deptId;
+
+    /**
+     * 出库单号，系统自动生成
+     */
     @Excel(name = "出库单号，系统自动生成")
     private String shipmentOrderNo;
 
-    /** 出库类型 */
+    /**
+     * 出库类型
+     */
     @Excel(name = "出库类型")
     private Long shipmentOrderType;
 
-    /** 领取人 */
+    /**
+     * 领取人
+     */
     @Excel(name = "领取人")
     private String recipient;
 
-    /** 出库单状态 */
+    /**
+     * 出库单状态
+     */
     @Excel(name = "出库单状态")
     private Integer shipmentOrderStatus;
 
-    /** 波次号 */
+    /**
+     * 波次号
+     */
     @Excel(name = "波次号")
     private String waveNo;
 
-    /** 删除标记 */
+    /**
+     * 删除标记
+     */
     @Excel(name = "删除标记")
     private Integer delFalg;
 
-    public void setId(Long id) 
-    {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getId() 
-    {
+    public Long getId() {
         return id;
     }
-    public void setShipmentOrderNo(String shipmentOrderNo) 
-    {
+
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
+
+    public void setShipmentOrderNo(String shipmentOrderNo) {
         this.shipmentOrderNo = shipmentOrderNo;
     }
 
-    public String getShipmentOrderNo() 
-    {
+    public String getShipmentOrderNo() {
         return shipmentOrderNo;
     }
-    public void setShipmentOrderType(Long shipmentOrderType) 
-    {
+
+    public void setShipmentOrderType(Long shipmentOrderType) {
         this.shipmentOrderType = shipmentOrderType;
     }
 
-    public Long getShipmentOrderType() 
-    {
+    public Long getShipmentOrderType() {
         return shipmentOrderType;
     }
-    public void setRecipient(String recipient) 
-    {
+
+    public void setRecipient(String recipient) {
         this.recipient = recipient;
     }
 
-    public String getRecipient() 
-    {
+    public String getRecipient() {
         return recipient;
     }
-    public void setShipmentOrderStatus(Integer shipmentOrderStatus) 
-    {
+
+    public void setShipmentOrderStatus(Integer shipmentOrderStatus) {
         this.shipmentOrderStatus = shipmentOrderStatus;
     }
 
-    public Integer getShipmentOrderStatus() 
-    {
+    public Integer getShipmentOrderStatus() {
         return shipmentOrderStatus;
     }
-    public void setWaveNo(String waveNo) 
-    {
+
+    public void setWaveNo(String waveNo) {
         this.waveNo = waveNo;
     }
 
-    public String getWaveNo() 
-    {
+    public String getWaveNo() {
         return waveNo;
     }
-    public void setDelFalg(Integer delFalg) 
-    {
+
+    public void setDelFalg(Integer delFalg) {
         this.delFalg = delFalg;
     }
 
-    public Integer getDelFalg() 
-    {
+    public Integer getDelFalg() {
         return delFalg;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("shipmentOrderNo", getShipmentOrderNo())
-            .append("shipmentOrderType", getShipmentOrderType())
-            .append("recipient", getRecipient())
-            .append("shipmentOrderStatus", getShipmentOrderStatus())
-            .append("waveNo", getWaveNo())
-            .append("remark", getRemark())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("delFalg", getDelFalg())
-            .toString();
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("id", getId())
+                .append("shipmentOrderNo", getShipmentOrderNo())
+                .append("shipmentOrderType", getShipmentOrderType())
+                .append("recipient", getRecipient())
+                .append("shipmentOrderStatus", getShipmentOrderStatus())
+                .append("waveNo", getWaveNo())
+                .append("remark", getRemark())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
+                .append("delFalg", getDelFalg())
+                .append("deptId",getDeptId())
+                .toString();
     }
 }

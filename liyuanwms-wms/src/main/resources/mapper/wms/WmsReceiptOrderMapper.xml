@@ -39,6 +39,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectWmsReceiptOrderVo"/>
         where id = #{id}
     </select>
+
+    <select id="selectWmsReceiptOrderByReceiptOrderNo" parameterType="String" resultMap="WmsReceiptOrderResult">
+        <include refid="selectWmsReceiptOrderVo"/>
+        where receipt_order_no = #{receiptOrderNo}
+    </select>
         
     <insert id="insertWmsReceiptOrder" parameterType="WmsReceiptOrder" useGeneratedKeys="true" keyProperty="id">
         insert into wms_receipt_order

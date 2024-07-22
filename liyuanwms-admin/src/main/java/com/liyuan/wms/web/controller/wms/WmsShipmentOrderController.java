@@ -1,10 +1,13 @@
-package com.liyuan.wms.wms.controller;
+package com.liyuan.wms.web.controller.wms;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.liyuan.wms.system.service.ISysDeptService;
 import com.liyuan.wms.wms.domain.WmsShipmentOrder;
 import com.liyuan.wms.wms.service.IWmsShipmentOrderService;
+import com.liyuan.wms.wms.vo.WmsShipmentOrderVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,10 +38,13 @@ public class WmsShipmentOrderController extends BaseController
     @Autowired
     private IWmsShipmentOrderService wmsShipmentOrderService;
 
+    @Autowired
+    private ISysDeptService deptService;
+
     /**
      * 查询出库单列表
      */
-    @PreAuthorize("@ss.hasPermi('system:order:list')")
+    @PreAuthorize("@ss.hasPermi('wms:outOrder:list')")
     @GetMapping("/list")
     public TableDataInfo list( WmsShipmentOrder wmsShipmentOrder)
     {
@@ -50,7 +56,7 @@ public class WmsShipmentOrderController extends BaseController
     /**
      * 导出出库单列表
      */
-    @PreAuthorize("@ss.hasPermi('system:order:export')")
+    @PreAuthorize("@ss.hasPermi('wms:outOrder:export')")
     @Log(title = "出库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, WmsShipmentOrder wmsShipmentOrder)
@@ -63,17 +69,21 @@ public class WmsShipmentOrderController extends BaseController
     /**
      * 获取出库单详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:order:query')")
+    @PreAuthorize("@ss.hasPermi('wms:outOrder:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
-        return success(wmsShipmentOrderService.selectWmsShipmentOrderById(id));
+        WmsShipmentOrder shipmentOrder = wmsShipmentOrderService.selectWmsShipmentOrderById(id);
+        WmsShipmentOrderVO shipmentOrderVO = new WmsShipmentOrderVO();
+        BeanUtils.copyProperties(shipmentOrder,shipmentOrderVO);
+        shipmentOrderVO.setDeptName(deptService.selectDeptById(shipmentOrderVO.getDeptId()).getDeptName());
+        return success(shipmentOrderVO);
     }
 
     /**
      * 新增出库单
      */
-    @PreAuthorize("@ss.hasPermi('system:order:add')")
+    @PreAuthorize("@ss.hasPermi('wms:outOrder:add')")
     @Log(title = "出库单", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody WmsShipmentOrder wmsShipmentOrder)
@@ -84,7 +94,7 @@ public class WmsShipmentOrderController extends BaseController
     /**
      * 修改出库单
      */
-    @PreAuthorize("@ss.hasPermi('system:order:edit')")
+    @PreAuthorize("@ss.hasPermi('wms:outOrder:edit')")
     @Log(title = "出库单", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody WmsShipmentOrder wmsShipmentOrder)
@@ -95,7 +105,7 @@ public class WmsShipmentOrderController extends BaseController
     /**
      * 删除出库单
      */
-    @PreAuthorize("@ss.hasPermi('system:order:remove')")
+    @PreAuthorize("@ss.hasPermi('wms:outOrder:remove')")
     @Log(title = "出库单", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

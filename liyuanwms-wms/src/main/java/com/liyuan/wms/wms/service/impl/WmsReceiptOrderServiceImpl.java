@@ -93,4 +93,9 @@ public class WmsReceiptOrderServiceImpl implements IWmsReceiptOrderService
     {
         return wmsReceiptOrderMapper.deleteWmsReceiptOrderById(id);
     }
+
+    @Override
+    public WmsReceiptOrder selectWmsReceiptOrderByReceiptOrderNo(String receiptOrderNo) {
+        return wmsReceiptOrderMapper.selectWmsReceiptOrderByReceiptOrderNo(receiptOrderNo);
+    }
 }

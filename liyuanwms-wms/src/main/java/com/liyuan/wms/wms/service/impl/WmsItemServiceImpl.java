@@ -1,17 +1,12 @@
 package com.liyuan.wms.wms.service.impl;
 
-import java.sql.Array;
 import java.util.*;
 
 import com.liyuan.wms.common.core.domain.entity.WmsItemType;
 import com.liyuan.wms.common.utils.DateUtils;
-import com.liyuan.wms.common.utils.spring.SpringUtils;
-import com.liyuan.wms.wms.controller.vo.WmsItemCountVO;
-import com.liyuan.wms.wms.controller.vo.WmsItemVO;
-import com.liyuan.wms.wms.domain.WmsWarehouse;
 import com.liyuan.wms.wms.service.IWmsItemTypeService;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.jdbc.Null;
+import com.liyuan.wms.wms.vo.WmsItemCountVO;
+import com.liyuan.wms.wms.vo.WmsItemVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,15 @@
-package com.liyuan.wms.wms.controller.vo;
+package com.liyuan.wms.wms.vo;
 
-import com.liyuan.wms.common.annotation.Excel;
 import com.liyuan.wms.wms.domain.WmsReceiptOrderDetail;
 
 import java.util.List;
 
 public class WmsReceiptOrderDetailRespVO extends WmsReceiptOrderDetail {
+
+    /**
+     * 单位
+     */
+    private String unit;
 
     /** 资产名称 */
     private String itemName;
@@ -41,6 +45,14 @@ public class WmsReceiptOrderDetailRespVO extends WmsReceiptOrderDetail {
 
 
     public WmsReceiptOrderDetailRespVO() {
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getItemName() {

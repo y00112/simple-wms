@@ -2,7 +2,6 @@ package com.liyuan.wms.wms.mapper;
 
 import java.util.List;
 
-import com.liyuan.wms.wms.controller.vo.WmsItemVO;
 import com.liyuan.wms.wms.domain.WmsItem;
 
 /**

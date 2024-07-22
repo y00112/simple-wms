@@ -1,4 +1,4 @@
-package com.liyuan.wms.wms.controller.vo;
+package com.liyuan.wms.wms.vo;
 
 import com.liyuan.wms.wms.domain.WmsShipmentOrderDetail;
 

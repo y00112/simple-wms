@@ -1,11 +1,9 @@
 package com.liyuan.wms.wms.service;
 
 import java.util.List;
-
-import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailRespVO;
-import com.liyuan.wms.wms.controller.vo.WmsShipmentDetailsRespVO;
-import com.liyuan.wms.wms.controller.vo.WmsShipmentOrderDetailsVO;
 import com.liyuan.wms.wms.domain.WmsShipmentOrderDetail;
+import com.liyuan.wms.wms.vo.WmsShipmentDetailsRespVO;
+import com.liyuan.wms.wms.vo.WmsShipmentOrderDetailsVO;
 
 /**
  * 出库单详情Service接口

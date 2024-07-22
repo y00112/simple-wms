@@ -94,6 +94,9 @@
           <el-table-column label="库存数量"
                            align="center"
                            prop="quantity" />
+          <el-table-column label="单位"
+                           align="center"
+                           prop="unit" />
           <el-table-column label="仓库/库区"
                            align="center"
                            prop="place">
@@ -168,7 +171,7 @@
 
       <div class="flex-center">
         <el-button @click="cancel"
-                   size="small">取 消</el-button>
+                   size="small">关 闭</el-button>
         <el-button type="primary"
                    @click="submitForm"
                    size="small"
@@ -210,7 +213,7 @@
       <div slot="footer"
            class="dialog-footer">
         <el-button @click="materialsOpen = false"
-                   size="small">取 消</el-button>
+                   size="small">关 闭</el-button>
         <el-button type="primary"
                    @click="submitList"
                    size="small">确 定</el-button>
@@ -361,7 +364,7 @@ export default {
       this.formData.inOrderList.forEach(it => {
         // 仅更新已选中
         if (this.ids.includes(it.id)) {
-          // it.place = [warehouseId, areaId, rackId].filter(Boolean)   
+          // it.place = [warehouseId, areaId, rackId].filter(Boolean)
           this.$set(it, 'place', [warehouseId, areaId, rackId].filter(Boolean))
           this.$set(it, 'warehouseId', warehouseId)
           this.$set(it, 'areaId', areaId)
@@ -377,6 +380,7 @@ export default {
         itemNo: item.itemNo,
         quantity: item.quantity,
         place: item.place,
+        unit:item.unit,
         receiptOrderStatus: 1
       }))
     },

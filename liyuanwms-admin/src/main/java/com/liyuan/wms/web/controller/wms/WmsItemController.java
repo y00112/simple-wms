@@ -1,10 +1,10 @@
-package com.liyuan.wms.wms.controller;
+package com.liyuan.wms.web.controller.wms;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
-import com.liyuan.wms.wms.controller.vo.WmsItemCountVO;
-import com.liyuan.wms.wms.controller.vo.WmsItemVO;
+import com.liyuan.wms.wms.vo.WmsItemCountVO;
+import com.liyuan.wms.wms.vo.WmsItemVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

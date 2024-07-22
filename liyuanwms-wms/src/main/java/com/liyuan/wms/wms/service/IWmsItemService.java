@@ -1,12 +1,10 @@
 package com.liyuan.wms.wms.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.liyuan.wms.wms.controller.vo.WmsItemCountVO;
-import com.liyuan.wms.wms.controller.vo.WmsItemVO;
 import com.liyuan.wms.wms.domain.WmsItem;
+import com.liyuan.wms.wms.vo.WmsItemCountVO;
+import com.liyuan.wms.wms.vo.WmsItemVO;
 
 /**
  * 资产Service接口

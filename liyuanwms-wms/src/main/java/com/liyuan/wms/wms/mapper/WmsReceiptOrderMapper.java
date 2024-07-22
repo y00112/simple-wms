@@ -58,4 +58,12 @@ public interface WmsReceiptOrderMapper
      * @return 结果
      */
     public int deleteWmsReceiptOrderByIds(Long[] ids);
+
+    /**
+     * 查询入库单
+     *
+     * @param receiptOrderNo
+     * @return
+     */
+    WmsReceiptOrder selectWmsReceiptOrderByReceiptOrderNo(String receiptOrderNo);
 }

@@ -1,10 +1,15 @@
-package com.liyuan.wms.wms.controller.vo;
+package com.liyuan.wms.wms.vo;
 
 import com.liyuan.wms.wms.domain.WmsShipmentOrderDetail;
 
 import java.util.List;
 
 public class WmsShipmentDetailsRespVO extends WmsShipmentOrderDetail {
+
+    /**
+     * 单位
+     */
+    private String unit;
 
     /** 资产名称 */
     private String itemName;
@@ -40,7 +45,8 @@ public class WmsShipmentDetailsRespVO extends WmsShipmentOrderDetail {
     public WmsShipmentDetailsRespVO() {
     }
 
-    public WmsShipmentDetailsRespVO(String itemName, String itemNo, List<Long> place, Long quantity, Long warehouseId, Long areaId, Long rackId) {
+    public WmsShipmentDetailsRespVO(String unit, String itemName, String itemNo, List<Long> place, Long quantity, Long warehouseId, Long areaId, Long rackId) {
+        this.unit = unit;
         this.itemName = itemName;
         this.itemNo = itemNo;
         this.place = place;
@@ -48,6 +54,14 @@ public class WmsShipmentDetailsRespVO extends WmsShipmentOrderDetail {
         this.warehouseId = warehouseId;
         this.areaId = areaId;
         this.rackId = rackId;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getItemName() {

@@ -58,4 +58,10 @@ public interface WmsShipmentOrderDetailMapper
      * @return 结果
      */
     public int deleteWmsShipmentOrderDetailByIds(Long[] ids);
+
+    /**
+     * 查询出库单状态为 "未出库" 的数量
+     * @param shipmentOrderNo
+     */
+    int selectCount(String shipmentOrderNo);
 }

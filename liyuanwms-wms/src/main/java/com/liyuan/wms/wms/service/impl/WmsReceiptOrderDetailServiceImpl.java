@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.liyuan.wms.common.utils.DateUtils;
-import com.liyuan.wms.wms.controller.vo.WmsItemVO;
-import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailRespVO;
-import com.liyuan.wms.wms.controller.vo.WmsReceiptOrderDetailsVO;
+import com.liyuan.wms.wms.domain.WmsReceiptOrder;
 import com.liyuan.wms.wms.service.IWmsItemService;
+import com.liyuan.wms.wms.service.IWmsReceiptOrderService;
+import com.liyuan.wms.wms.vo.WmsItemVO;
+import com.liyuan.wms.wms.vo.WmsReceiptOrderDetailRespVO;
+import com.liyuan.wms.wms.vo.WmsReceiptOrderDetailsVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.liyuan.wms.wms.mapper.WmsReceiptOrderDetailMapper;
 import com.liyuan.wms.wms.domain.WmsReceiptOrderDetail;
 import com.liyuan.wms.wms.service.IWmsReceiptOrderDetailService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 入库单详情Service业务层处理
@@ -28,6 +31,9 @@ public class WmsReceiptOrderDetailServiceImpl implements IWmsReceiptOrderDetailS
 
     @Autowired
     private IWmsItemService wmsItemService;
+
+    @Autowired
+    private IWmsReceiptOrderService wmsReceiptOrderService;
 
     /**
      * 查询入库单详情
@@ -62,6 +68,7 @@ public class WmsReceiptOrderDetailServiceImpl implements IWmsReceiptOrderDetailS
             vo.setItemName(item.getItemName());
             vo.setItemNo(item.getItemNo());
             vo.setPlace(place);
+            vo.setUnit(item.getUnit());
             result.add(vo);
         }
         return result;
@@ -142,6 +149,7 @@ public class WmsReceiptOrderDetailServiceImpl implements IWmsReceiptOrderDetailS
     }
 
     @Override
+    @Transactional
     public int edits(WmsReceiptOrderDetailsVO vo) {
         vo.getList().forEach(item -> {
             // 修改资产库存
@@ -153,6 +161,14 @@ public class WmsReceiptOrderDetailServiceImpl implements IWmsReceiptOrderDetailS
             item.setUpdateTime(DateUtils.getNowDate());
             wmsReceiptOrderDetailMapper.updateWmsReceiptOrderDetail(item);
         });
+        // 根据入库单查询入库状态
+        String receiptOrderNo = vo.getList().get(0).getReceiptOrderNo();
+        int count = wmsReceiptOrderDetailMapper.selectCount(receiptOrderNo);
+        if (count == 0){
+            WmsReceiptOrder wmsReceiptOrder = wmsReceiptOrderService.selectWmsReceiptOrderByReceiptOrderNo(receiptOrderNo);
+            wmsReceiptOrder.setReceiptOrderStatus(2);
+            wmsReceiptOrderService.updateWmsReceiptOrder(wmsReceiptOrder);
+        }
         return 1;
     }
 }

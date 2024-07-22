@@ -1,22 +1,21 @@
 package com.liyuan.wms.wms.service.impl;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.liyuan.wms.common.utils.DateUtils;
-import com.liyuan.wms.wms.controller.vo.*;
-import com.liyuan.wms.wms.domain.WmsReceiptOrderDetail;
+import com.liyuan.wms.wms.domain.WmsShipmentOrder;
 import com.liyuan.wms.wms.service.IWmsItemService;
+import com.liyuan.wms.wms.vo.WmsItemVO;
+import com.liyuan.wms.wms.vo.WmsShipmentDetailsRespVO;
+import com.liyuan.wms.wms.vo.WmsShipmentOrderDetailsVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.liyuan.wms.wms.mapper.WmsShipmentOrderDetailMapper;
 import com.liyuan.wms.wms.domain.WmsShipmentOrderDetail;
 import com.liyuan.wms.wms.service.IWmsShipmentOrderDetailService;
-
-import javax.annotation.Resource;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 出库单详情Service业务层处理
@@ -28,6 +27,9 @@ import javax.annotation.Resource;
 public class WmsShipmentOrderDetailServiceImpl implements IWmsShipmentOrderDetailService {
     @Autowired
     private WmsShipmentOrderDetailMapper wmsShipmentOrderDetailMapper;
+
+    @Autowired
+    private WmsShipmentOrderServiceImpl wmsShipmentOrderService;
 
     @Autowired
     private IWmsItemService wmsItemService;
@@ -122,6 +124,7 @@ public class WmsShipmentOrderDetailServiceImpl implements IWmsShipmentOrderDetai
      * @return
      */
     @Override
+    @Transactional
     public int edits(WmsShipmentOrderDetailsVO vo) {
         vo.getList().forEach(item -> {
             // 修改资产库存
@@ -133,6 +136,14 @@ public class WmsShipmentOrderDetailServiceImpl implements IWmsShipmentOrderDetai
             item.setUpdateTime(DateUtils.getNowDate());
             wmsShipmentOrderDetailMapper.updateWmsShipmentOrderDetail(item);
         });
+        // 根据出库单号查询出库状态
+        String shipmentOrderNo = vo.getList().get(0).getShipmentOrderNo();
+        int count = wmsShipmentOrderDetailMapper.selectCount(shipmentOrderNo);
+        if (count == 0){
+            WmsShipmentOrder wmsShipmentOrder = wmsShipmentOrderService.selectWmsShipmentOrderByShipmentOrderNo(shipmentOrderNo);
+            wmsShipmentOrder.setShipmentOrderStatus(2);
+            wmsShipmentOrderService.updateWmsShipmentOrder(wmsShipmentOrder);
+        }
         return 1;
     }
 
@@ -153,6 +164,7 @@ public class WmsShipmentOrderDetailServiceImpl implements IWmsShipmentOrderDetai
             vo.setItemNo(wmsItem.getItemNo());
             vo.setPlace(place);
             vo.setQuantity(wmsItem.getQuantity());
+            vo.setUnit(wmsItem.getUnit());
             result.add(vo);
         }
         return result;

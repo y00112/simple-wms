@@ -17,10 +17,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="delFalg"    column="del_falg"    />
+        <result property="deptId" column="dept_id"/>
     </resultMap>
 
     <sql id="selectWmsShipmentOrderVo">
-        select id, shipment_order_no, shipment_order_type, recipient, shipment_order_status, wave_no, remark, create_by, create_time, update_by, update_time, del_falg from wms_shipment_order
+        select id, shipment_order_no, shipment_order_type, recipient, shipment_order_status, wave_no, remark, create_by, create_time, update_by, update_time, del_falg,dept_id from wms_shipment_order
     </sql>
 
     <select id="selectWmsShipmentOrderList" parameterType="WmsShipmentOrder" resultMap="WmsShipmentOrderResult">
@@ -34,13 +35,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="delFalg != null "> and del_falg = #{delFalg}</if>
             <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
         </where>
+        order by create_time desc
     </select>
     
+    <select id="selectWmsShipmentOrderByShipmentOrderNo" parameterType="String" resultMap="WmsShipmentOrderResult">
+        <include refid="selectWmsShipmentOrderVo"/>
+        where shipment_order_no = #{shipmentOrderNo}
+    </select>
+
     <select id="selectWmsShipmentOrderById" parameterType="Long" resultMap="WmsShipmentOrderResult">
         <include refid="selectWmsShipmentOrderVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertWmsShipmentOrder" parameterType="WmsShipmentOrder" useGeneratedKeys="true" keyProperty="id">
         insert into wms_shipment_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -55,6 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="delFalg != null">del_falg,</if>
+            <if test="deptId != null">dept_id,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="shipmentOrderNo != null">#{shipmentOrderNo},</if>
@@ -68,6 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="delFalg != null">#{delFalg},</if>
+            <if test="deptId != null">#{deptId},</if>
          </trim>
     </insert>
 
@@ -85,6 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="delFalg != null">del_falg = #{delFalg},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
         </trim>
         where id = #{id}
     </update>

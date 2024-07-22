@@ -1,4 +1,4 @@
-package com.liyuan.wms.wms.controller;
+package com.liyuan.wms.web.controller.wms;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;

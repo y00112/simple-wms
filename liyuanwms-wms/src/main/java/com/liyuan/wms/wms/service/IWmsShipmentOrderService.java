@@ -1,6 +1,7 @@
 package com.liyuan.wms.wms.service;
 
 import com.liyuan.wms.wms.domain.WmsShipmentOrder;
+import com.liyuan.wms.wms.vo.WmsShipmentOrderVO;
 
 import java.util.List;
 
@@ -59,4 +60,6 @@ public interface IWmsShipmentOrderService
      * @return 结果
      */
     public int deleteWmsShipmentOrderById(Long id);
+
+    WmsShipmentOrder selectWmsShipmentOrderByShipmentOrderNo(String shipmentOrderNo);
 }

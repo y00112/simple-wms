@@ -59,4 +59,6 @@ public interface WmsShipmentOrderMapper
      * @return 结果
      */
     public int deleteWmsShipmentOrderByIds(Long[] ids);
+
+    WmsShipmentOrder selectWmsShipmentOrderByShipmentOrderNo(String shipmentOrderNo);
 }

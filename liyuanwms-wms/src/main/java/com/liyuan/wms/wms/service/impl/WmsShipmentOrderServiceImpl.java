@@ -93,4 +93,9 @@ public class WmsShipmentOrderServiceImpl implements IWmsShipmentOrderService
     {
         return wmsShipmentOrderMapper.deleteWmsShipmentOrderById(id);
     }
+
+    @Override
+    public WmsShipmentOrder selectWmsShipmentOrderByShipmentOrderNo(String shipmentOrderNo) {
+        return wmsShipmentOrderMapper.selectWmsShipmentOrderByShipmentOrderNo(shipmentOrderNo);
+    }
 }

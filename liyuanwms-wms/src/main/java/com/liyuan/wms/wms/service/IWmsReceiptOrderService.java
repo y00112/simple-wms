@@ -58,4 +58,12 @@ public interface IWmsReceiptOrderService
      * @return 结果
      */
     public int deleteWmsReceiptOrderById(Long id);
+
+    /**
+     * 查询入库单
+     *
+     * @param receiptOrderNo 入库单号
+     * @return
+     */
+    WmsReceiptOrder selectWmsReceiptOrderByReceiptOrderNo(String receiptOrderNo);
 }

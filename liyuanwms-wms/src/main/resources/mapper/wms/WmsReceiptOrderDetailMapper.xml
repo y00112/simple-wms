@@ -97,4 +97,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectCount" resultType="int" parameterType="java.lang.String">
+        SELECT COUNT(*)
+        FROM wms_receipt_order_detail
+        WHERE receipt_order_no = #{receiptOrderNo}
+          AND receipt_order_status = 1
+    </select>
 </mapper>

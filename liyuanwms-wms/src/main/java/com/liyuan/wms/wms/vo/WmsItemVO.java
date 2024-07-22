@@ -1,8 +1,7 @@
-package com.liyuan.wms.wms.controller.vo;
+package com.liyuan.wms.wms.vo;
 
 import com.liyuan.wms.wms.domain.WmsItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WmsItemVO extends WmsItem {

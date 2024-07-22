@@ -58,4 +58,11 @@ public interface WmsReceiptOrderDetailMapper
      * @return 结果
      */
     public int deleteWmsReceiptOrderDetailByIds(Long[] ids);
+
+    /**
+     * 查询入库单详情状态为 "未出库" 的数量
+     * @param receiptOrderNo
+     * @return
+     */
+    int selectCount(String receiptOrderNo);
 }
