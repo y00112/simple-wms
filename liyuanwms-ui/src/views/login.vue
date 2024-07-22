@@ -1,13 +1,6 @@
 <template>
   <div class="login">
-<<<<<<< HEAD
-    <el-form ref="loginForm"
-             :model="loginForm"
-             :rules="loginRules"
-             class="login-form">
-=======
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
->>>>>>> be2d2a0c95eef06597b34c17046a78641b9c249b
       <h3 class="title">物资领用</h3>
       <el-form-item prop="username">
         <el-input v-model="loginForm.username"
