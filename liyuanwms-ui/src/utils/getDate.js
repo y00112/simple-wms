@@ -1,7 +1,7 @@
 import { parseTime } from './ruoyi'
 /**
  * 获取当前日期
- * 
+ *
  */
 export function getNowDateTime() {
     const now = new Date();
@@ -10,7 +10,7 @@ export function getNowDateTime() {
 
 /**
  * 获取当前日期的前一天
- * 
+ *
  */
 export function getLastDateTime() {
     const now = new Date();
