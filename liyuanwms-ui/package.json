@@ -5,7 +5,7 @@
   "author": "wms",
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
-    "build:prod": "vue-cli-service build",
+    "build:prod": "vue-cli-service build --mode prod",
     "build:stage": "vue-cli-service build --mode staging",
     "dev": "vue-cli-service serve",
     "electron:build": "vue-cli-service electron:build",
